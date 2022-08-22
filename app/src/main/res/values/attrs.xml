@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="WeekView">
+        <attr name="week" format="integer"/>
+        <attr name="subtitle" format="string"/>
+        <attr name="video_src" format="string"/>
+        <attr name="text_src" format="string"/>
+        <attr name="audio_src" format="string"/>
+
+    </declare-styleable>
+</resources>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "301545986602",
+    "project_id": "neurosaude-firmino",
+    "storage_bucket": "neurosaude-firmino.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301545986602:android:c4515bc47c27cd416b0153",
+        "android_client_info": {
+          "package_name": "com.firmino.neurossaude"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "301545986602-6vips8iihdr4colpvqgqjoc33irlhc0m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.firmino.neurossaude",
+            "certificate_hash": "1d5ccb2127e0eee12622c848d34143bd012f6633"
+          }
+        },
+        {
+          "client_id": "301545986602-uvuf98nk2oogaocou4k07f2n1lb97agi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFlaOHKpmh4Zji0tqF9FNsUPnn-BN_Bmc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "301545986602-uvuf98nk2oogaocou4k07f2n1lb97agi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
