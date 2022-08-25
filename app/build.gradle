@@ -45,6 +45,15 @@ dependencies {
     // Firebase Storage
     implementation 'com.google.firebase:firebase-storage'
 
+    // PDF Viewer
+    implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1'
+
+    // ExoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.18.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.1'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.18.1'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.1'
+
     implementation platform('com.google.firebase:firebase-bom:30.3.2')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'androidx.appcompat:appcompat:1.5.0'

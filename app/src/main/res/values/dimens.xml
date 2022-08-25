@@ -1,6 +1,6 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="app_bar_height">260dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="weekview_buttons_height">100dp</dimen>
     <dimen name="audio_controllayouttop">240dp</dimen>

@@ -1,10 +1,19 @@
 package com.firmino.neurossaude;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -23,6 +32,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -37,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> authActivityResultLauncher;
 
     private FirebaseFirestore mFirestore;
+
+    //TODO: fazer com que seja impossivel conectar sem internet.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,15 +86,16 @@ public class LoginActivity extends AppCompatActivity {
                             signed();
                         } else {
                             MessageAlert.create(this, MessageAlert.TYPE_ERRO, "Falha ao tentar fazer login com o Google.");
+                            setLoadingMode(false);
                         }
                     });
                 } catch (ApiException e) {
                     MessageAlert.create(this, MessageAlert.TYPE_ERRO, "Falha ao tentar fazer login com o Google.");
+                    setLoadingMode(false);
                 }
             }
         });
     }
-
 
     public void onStart() {
         super.onStart();
@@ -94,9 +108,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signIn() {
-        if(mAccount == null) {
+        setLoadingMode(true);
+        if (mAccount == null) {
             authActivityResultLauncher.launch(mGoogleSignInClient.getSignInIntent());
-        } else{
+        } else {
             signed();
         }
     }
@@ -110,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
     private void signed() {
         User.email = mAccount.getEmail();
         User.username = mAccount.getDisplayName();
-        User.image = mAccount.getPhotoUrl();
+
 
         mFirestore.collection("users").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -119,13 +134,44 @@ public class LoginActivity extends AppCompatActivity {
                 newUser.put("username", mAccount.getDisplayName());
                 newUser.put("image", String.valueOf(mAccount.getPhotoUrl()));
                 mFirestore.collection("users").document(Objects.requireNonNull(mAccount.getEmail())).set(newUser);
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                finish();
-            } else{
+                new Thread(() -> {
+                    try {
+                        if (mAccount.getPhotoUrl() != null) {
+                            Uri uri = Uri.parse(mAccount.getPhotoUrl().toString());
+                            URL newurl = new URL(uri.toString());
+                            User.image = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
+                        }else{
+                            User.image =BitmapFactory.decodeResource(getResources(),R.drawable.ic_google_logged);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    runOnUiThread(() -> {
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+                    });
+                }).start();
+            } else {
                 MessageAlert.create(this, MessageAlert.TYPE_ERRO, "Não foi possível carregar dados da conta, tente novamente mais tarde.");
+                setLoadingMode(false);
             }
         });
     }
 
-
+    private void setLoadingMode(boolean isOn) {
+        mLoginButton.setEnabled(!isOn);
+        FrameLayout ripple = findViewById(R.id.Login_Ripple);
+        ripple.setVisibility(View.VISIBLE);
+        int maxSize = getResources().getDisplayMetrics().heightPixels * 2;
+        ValueAnimator anim = ValueAnimator.ofInt(isOn ? 0 : maxSize, isOn ? maxSize : 0);
+        anim.addUpdateListener(animation -> {
+            ViewGroup.LayoutParams params = ripple.getLayoutParams();
+            params.height = (int) animation.getAnimatedValue();
+            params.width = (int) animation.getAnimatedValue();
+            ripple.setLayoutParams(params);
+        });
+        findViewById(R.id.Login_Progress).setVisibility(isOn ? View.VISIBLE : View.GONE);
+        anim.setDuration(1000);
+        anim.start();
+    }
 }
