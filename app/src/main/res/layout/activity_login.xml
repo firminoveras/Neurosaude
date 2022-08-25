@@ -164,91 +164,16 @@
             android:scaleY=".8"
             android:src="@drawable/bg_circle"
             app:tint="@color/color_background" />
+
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:indeterminate="true"
+            android:indeterminateTint="#4D000000" />
     </FrameLayout>
 
-    <ProgressBar
-        android:id="@+id/Login_Progress"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_gravity="center"
-        android:clickable="false"
-        android:indeterminate="true"
-        android:indeterminateTint="#4D000000"
-        android:visibility="gone" />
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/Login_WelcomeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/color_background"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/Login_Welcome_Background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha=".05"
-            android:rotation="15"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_icon_launcher"
-            app:tint="@color/color_black" />
-
-        <ImageView
-            android:layout_width="132dp"
-            android:layout_height="132dp"
-            android:layout_gravity="center"
-            android:alpha=".5"
-            android:rotation="15"
-            android:scaleType="fitCenter"
-            android:src="@drawable/bg_circle" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/Login_Welcome_Card"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_gravity="center"
-            app:cardCornerRadius="180dp">
-
-            <ImageView
-                android:id="@+id/Login_Welcome_UserImage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:alpha=".7"
-            android:elevation="2dp"
-            android:paddingStart="24dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="24dp"
-            android:paddingBottom="80dp"
-            android:text="@string/welcome"
-            android:textColor="@color/color_white"
-            android:textSize="26sp"
-            android:textStyle="italic"
-            app:layout_anchor="@id/Login_Welcome_Card"
-            app:layout_anchorGravity="top|center_horizontal" />
-
-        <TextView
-            android:id="@+id/Login_Welcome_UserName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_button_ripple"
-            android:elevation="2dp"
-            android:fontFamily="sans-serif-light"
-            android:paddingStart="24dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="24dp"
-            android:paddingBottom="4dp"
-            android:textColor="@color/color_background"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_anchor="@id/Login_Welcome_Card"
-            app:layout_anchorGravity="bottom|center_horizontal" />
-
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </FrameLayout>

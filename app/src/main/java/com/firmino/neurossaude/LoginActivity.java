@@ -6,14 +6,10 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -49,8 +45,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseFirestore mFirestore;
 
-    //TODO: fazer com que seja impossivel conectar sem internet.
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
         mLogoffButton.setOnClickListener(v -> signOut());
 
         mFirestore = FirebaseFirestore.getInstance();
-
     }
 
     private ActivityResultLauncher<Intent> createAuthResultLauncher() {
@@ -85,13 +78,13 @@ public class LoginActivity extends AppCompatActivity {
                             mAccount = mAuth.getCurrentUser();
                             signed();
                         } else {
+                            signOut();
                             MessageAlert.create(this, MessageAlert.TYPE_ERRO, "Falha ao tentar fazer login com o Google.");
-                            setLoadingMode(false);
                         }
                     });
                 } catch (ApiException e) {
+                    signOut();
                     MessageAlert.create(this, MessageAlert.TYPE_ERRO, "Falha ao tentar fazer login com o Google.");
-                    setLoadingMode(false);
                 }
             }
         });
@@ -108,69 +101,66 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signIn() {
-        setLoadingMode(true);
-        if (mAccount == null) {
+        setLoadingMode();
+        if (mAccount == null)
             authActivityResultLauncher.launch(mGoogleSignInClient.getSignInIntent());
-        } else {
-            signed();
-        }
+        else signed();
     }
 
     private void signOut() {
-        FirebaseAuth.getInstance().signOut();
-        this.recreate();
-        MessageAlert.create(this, MessageAlert.TYPE_SUCESS, "Você saiu da conta.");
+        setLoadingMode();
+        mGoogleSignInClient.signOut().addOnCompleteListener(task -> {
+            mAuth.signOut();
+            mAccount = null;
+            this.recreate();
+            MessageAlert.create(this, MessageAlert.TYPE_SUCESS, "Você saiu da conta.");
+        });
     }
 
     private void signed() {
         User.email = mAccount.getEmail();
         User.username = mAccount.getDisplayName();
+        Map<String, Object> newUser = new HashMap<>();
+        newUser.put("email", mAccount.getEmail());
+        newUser.put("username", mAccount.getDisplayName());
+        newUser.put("image", String.valueOf(mAccount.getPhotoUrl()));
 
-
-        mFirestore.collection("users").get().addOnCompleteListener(task -> {
+        mFirestore.collection("users").document(Objects.requireNonNull(mAccount.getEmail())).set(newUser).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Map<String, Object> newUser = new HashMap<>();
-                newUser.put("email", mAccount.getEmail());
-                newUser.put("username", mAccount.getDisplayName());
-                newUser.put("image", String.valueOf(mAccount.getPhotoUrl()));
-                mFirestore.collection("users").document(Objects.requireNonNull(mAccount.getEmail())).set(newUser);
-                new Thread(() -> {
-                    try {
-                        if (mAccount.getPhotoUrl() != null) {
-                            Uri uri = Uri.parse(mAccount.getPhotoUrl().toString());
-                            URL newurl = new URL(uri.toString());
-                            User.image = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
-                        }else{
-                            User.image =BitmapFactory.decodeResource(getResources(),R.drawable.ic_google_logged);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    runOnUiThread(() -> {
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
-                    });
-                }).start();
+                try {
+                    if (mAccount.getPhotoUrl() != null) {
+                        Uri uri = Uri.parse(mAccount.getPhotoUrl().toString());
+                        URL newurl = new URL(uri.toString());
+                        User.image = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
+                    } else
+                        User.image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_google_logged);
+
+                } catch (IOException e) {
+                    MessageAlert.create(this, MessageAlert.TYPE_ALERT, "Não foi possível carregar imagem da conta.");
+                }
+                runOnUiThread(() -> {
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
+                });
             } else {
                 MessageAlert.create(this, MessageAlert.TYPE_ERRO, "Não foi possível carregar dados da conta, tente novamente mais tarde.");
-                setLoadingMode(false);
+                signOut();
             }
         });
     }
 
-    private void setLoadingMode(boolean isOn) {
-        mLoginButton.setEnabled(!isOn);
+    private void setLoadingMode() {
+        mLoginButton.setEnabled(false);
         FrameLayout ripple = findViewById(R.id.Login_Ripple);
         ripple.setVisibility(View.VISIBLE);
         int maxSize = getResources().getDisplayMetrics().heightPixels * 2;
-        ValueAnimator anim = ValueAnimator.ofInt(isOn ? 0 : maxSize, isOn ? maxSize : 0);
+        ValueAnimator anim = ValueAnimator.ofInt(0, maxSize);
         anim.addUpdateListener(animation -> {
             ViewGroup.LayoutParams params = ripple.getLayoutParams();
             params.height = (int) animation.getAnimatedValue();
             params.width = (int) animation.getAnimatedValue();
             ripple.setLayoutParams(params);
         });
-        findViewById(R.id.Login_Progress).setVisibility(isOn ? View.VISIBLE : View.GONE);
         anim.setDuration(1000);
         anim.start();
     }
