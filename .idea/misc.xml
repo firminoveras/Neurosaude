@@ -3,22 +3,35 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_background_week_buttons.xml" value="0.3075" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_button_ripple.xml" value="0.2125" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_button_ripple_transparent.xml" value="0.394" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_circle.xml" value="0.395" />
+        <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_circle_button_disabled.xml" value="0.383" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_circle_ripple.xml" value="0.395" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_circularprogress.xml" value="0.395" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_custom_seekbar.xml" value="0.394" />
+        <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_line.xml" value="0.395" />
+        <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_line_left.xml" value="0.395" />
+        <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_line_right.xml" value="0.395" />
+        <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_line_vertical.xml" value="0.395" />
+        <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_lines_right.xml" value="0.395" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_login.xml" value="0.384" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_panel_ripple.xml" value="0.394" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_play_controls_layout.xml" value="0.395" />
+        <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_progress.xml" value="0.271" />
+        <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_progress_drawable.xml" value="0.271" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_rounded_square.xml" value="0.2125" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_seekbar.xml" value="0.395" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_seekbar_indicator.xml" value="0.395" />
+        <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_text.xml" value="0.383" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/bg_week_buttons_layout.xml" value="0.211" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/circle_shape.xml" value="0.394" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/circular_progress_bar.xml" value="0.395" />
+        <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/circular_subtitle.xml" value="0.395" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/ic_alert.xml" value="0.2125" />
+        <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/ic_bg_line_vertical.xml" value="0.395" />
+        <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/ic_bg_line_vertical_half.xml" value="0.395" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/ic_done.xml" value="0.2125" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/ic_erro.xml" value="0.2125" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/drawable/ic_github.xml" value="0.384" />
@@ -38,7 +51,8 @@
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/layout/appbar_layout.xml" value="0.22" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/layout/content_scrolling.xml" value="0.3953125" />
         <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/layout/layout_alerts_messagealert.xml" value="0.38385416666666666" />
-        <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/layout/weekview_layout.xml" value="0.67" />
+        <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/layout/weekview_coin_layout.xml" value="0.75" />
+        <entry key="..\:/Firmino/Documents/Projetos/Android-Neurosaude/app/src/main/res/layout/weekview_layout.xml" value="0.36952288218111" />
       </map>
     </option>
   </component>

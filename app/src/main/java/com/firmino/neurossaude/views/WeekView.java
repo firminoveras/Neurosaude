@@ -1,117 +1,98 @@
 package com.firmino.neurossaude.views;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.util.AttributeSet;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.firmino.neurossaude.MainActivity;
 import com.firmino.neurossaude.PlayActivity;
 import com.firmino.neurossaude.R;
 import com.firmino.neurossaude.user.User;
 
 import java.util.Locale;
 
+@SuppressLint("ViewConstructor")
 public class WeekView extends FrameLayout {
+
     private final Context mContext;
 
     private TextView mTitle;
     private TextView mSubtitle;
-    private TextView mPercentVideo;
-    private TextView mPercentText;
-    private TextView mPercentAudio;
-    private ProgressBar mProgress;
-    private FrameLayout mButtonsLayout;
-
-    private int videoProgress = 0;
-    private int textProgress = 0;
-    private int audioProgress = 0;
+    private TextView mPercent;
+    private ConstraintLayout mButtonsLayout;
+    private WeekViewCoinButton mCoinText;
+    private WeekViewCoinButton mCoinVideo;
+    private WeekViewCoinButton mCoinAudio1;
+    private WeekViewCoinButton mCoinAudio2;
+    private WeekViewCoinButton mCoinAudio3;
+    private WeekViewCoinButton mCoinAudio4;
+    private WeekViewCoinButton mCoinAudio5;
+    private WeekViewCoinButton mCoinAudio6;
 
     private final int week;
     private boolean isButtonsVisibles = false;
-
-    private OnButtonsVisibleChangeListener onButtonsVisibleChangeListener;
-    private int audioValue = 0;
-    private int videoValue = 0;
-    private int textValue = 0;
-
-    private String videoTitle;
-    private String videoText;
-    private String audioTitle;
-    private String audioText;
-    private String textTitle;
-    private String textText;
     private boolean isEnabledMode = false;
+    private OnButtonsVisibleChangeListener onButtonsVisibleChangeListener;
+    private final String videoTitle;
+    private final String videoText;
+    private final String audioTitle;
+    private final String audioText;
+    private final String textTitle;
+    private final String textText;
+    private OnCoinClickedListener buttonsVisibleChangeListener = intent -> {
 
+    };
 
-    public WeekView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+    public WeekView(@NonNull Context context, int week, String title, String videoTitle, String videoText, String audioTitle, String audioText, String textTitle, String textText) {
+        super(context);
         mContext = context;
         init();
         setEnabledMode(false);
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.WeekView, 0, 0);
-        week = ta.getInt(R.styleable.WeekView_week, 0);
+        this.week = week;
         mTitle.setText(String.format(Locale.getDefault(), "Semana %d", week));
-        ta.recycle();
-        User.getWeekTexts(week, (title, videoTitle, videoText, audioTitle, audioText, textTitle, textText) -> {
-            mSubtitle.setText(title);
-            this.videoTitle = videoTitle;
-            this.videoText = videoText;
-            this.audioTitle = audioTitle;
-            this.audioText = audioText;
-            this.textTitle = textTitle;
-            this.textText = textText;
-            update();
-        });
+        mSubtitle.setText(title);
+        this.videoTitle = videoTitle;
+        this.videoText = videoText;
+        this.audioTitle = audioTitle;
+        this.audioText = audioText;
+        this.textTitle = textTitle;
+        this.textText = textText;
+        update();
     }
 
     public void update() {
-        User.getValues(week, (videoLastMillis, textLastPage, audioLastMillis) -> {
-            audioValue = audioLastMillis;
-            videoValue = videoLastMillis;
-            textValue = textLastPage;
-            User.getProgress(week, (videoProgress, textProgress, audioProgress) -> {
-                this.videoProgress = videoProgress;
-                this.textProgress = textProgress;
-                this.audioProgress = audioProgress;
-
-                mPercentVideo.setText(String.format(Locale.getDefault(), "%d%%", this.videoProgress));
-                mPercentText.setText(String.format(Locale.getDefault(), "%d%%", this.textProgress));
-                mPercentAudio.setText(String.format(Locale.getDefault(), "%d%%", this.audioProgress));
-
-                if (this.videoProgress >= 100)
-                    mPercentVideo.setBackgroundTintList(ColorStateList.valueOf(Color.argb(255, 50, 200, 50)));
-                if (this.textProgress >= 100)
-                    mPercentText.setBackgroundTintList(ColorStateList.valueOf(Color.argb(255, 50, 200, 50)));
-                if (audioProgress >= 100)
-                    mPercentAudio.setBackgroundTintList(ColorStateList.valueOf(Color.argb(255, 50, 200, 50)));
-
-                setEnabledMode(true);
-                mProgress.setProgress(getProgress());
-            });
+        setEnabledMode(false);
+        User.getWeekValues(week, (videoProgress, videoValue, textProgress, textValue, audioProgress, audioValue) -> {
+            mCoinVideo.setValues(videoProgress, videoValue);
+            mCoinText.setValues(textProgress, textValue);
+            mCoinAudio1.setValues(audioProgress.get(0), audioValue.get(0));
+            mCoinAudio2.setValues(audioProgress.get(1), audioValue.get(1));
+            mCoinAudio3.setValues(audioProgress.get(2), audioValue.get(2));
+            mCoinAudio4.setValues(audioProgress.get(3), audioValue.get(3));
+            mCoinAudio5.setValues(audioProgress.get(4), audioValue.get(4));
+            mCoinAudio6.setValues(audioProgress.get(5), audioValue.get(5));
+            mPercent.setText(String.format(Locale.getDefault(), "%d%%", getProgress()));
+            setEnabledMode(true);
         });
-
     }
 
     public void setEnabledMode(boolean enabled) {
         isEnabledMode = enabled;
-        ((ProgressBar) findViewById(R.id.mWeekProgress)).setIndeterminate(!enabled);
-        findViewById(R.id.mWeekButtonVideo).setEnabled(enabled);
-        findViewById(R.id.mWeekButtonText).setEnabled(enabled);
-        findViewById(R.id.mWeekButtonAudio).setEnabled(enabled);
+        findViewById(R.id.mWeekLockIcon).setVisibility(enabled ? GONE : VISIBLE);
+        mCoinText.setEnabled(enabled);
+        mCoinVideo.setEnabled(enabled);
+        mCoinAudio1.setEnabled(enabled);
+        mCoinAudio2.setEnabled(enabled);
+        mCoinAudio3.setEnabled(enabled);
+        mCoinAudio4.setEnabled(enabled);
+        mCoinAudio5.setEnabled(enabled);
+        mCoinAudio6.setEnabled(enabled);
     }
 
     public void setButtonsVisible(boolean isVisible) {
@@ -124,6 +105,7 @@ public class WeekView extends FrameLayout {
                 ViewGroup.LayoutParams lay = mButtonsLayout.getLayoutParams();
                 lay.height = (int) valueAnimator.getAnimatedValue();
                 mButtonsLayout.setLayoutParams(lay);
+                System.out.println(lay.height);
             });
             anim.setDuration(300);
             anim.start();
@@ -134,87 +116,94 @@ public class WeekView extends FrameLayout {
         inflate(mContext, R.layout.weekview_layout, this);
         mTitle = findViewById(R.id.mWeekTitle);
         mSubtitle = findViewById(R.id.mWeekSubTitle);
-        mPercentVideo = findViewById(R.id.mWeekPercentVideo);
-        mPercentText = findViewById(R.id.mWeekPercentText);
-        mPercentAudio = findViewById(R.id.mWeekPercentAudio);
-        Button mButtonVideo = findViewById(R.id.mWeekButtonVideo);
-        Button mButtonText = findViewById(R.id.mWeekButtonText);
-        Button mButtonAudio = findViewById(R.id.mWeekButtonAudio);
-        mProgress = findViewById(R.id.mWeekProgress);
+        mCoinText = findViewById(R.id.mWeekButtonText);
+        mCoinVideo = findViewById(R.id.mWeekButtonVideo);
+        mCoinAudio1 = findViewById(R.id.mWeekButtonAudio1);
+        mCoinAudio2 = findViewById(R.id.mWeekButtonAudio2);
+        mCoinAudio3 = findViewById(R.id.mWeekButtonAudio3);
+        mCoinAudio4 = findViewById(R.id.mWeekButtonAudio4);
+        mCoinAudio5 = findViewById(R.id.mWeekButtonAudio5);
+        mCoinAudio6 = findViewById(R.id.mWeekButtonAudio6);
+        mPercent = findViewById(R.id.mWeekPercent);
         mButtonsLayout = findViewById(R.id.mWeekButtonsLayout);
 
         mTitle.setOnClickListener(view -> setButtonsVisible(!isButtonsVisibles));
-        mSubtitle.setOnClickListener(view -> setButtonsVisible(!isButtonsVisibles));
-        setOnClickListener(view -> setButtonsVisible(!isButtonsVisibles));
 
+        mCoinVideo.setOnCoinClickListener(this::coinVideoClicked);
+        mCoinText.setOnCoinClickListener(this::coinTextClicked);
+        mCoinAudio1.setOnCoinClickListener((progress, value) -> coinAudioClicked(progress, value, 1));
+        mCoinAudio2.setOnCoinClickListener((progress, value) -> coinAudioClicked(progress, value, 2));
+        mCoinAudio3.setOnCoinClickListener((progress, value) -> coinAudioClicked(progress, value, 3));
+        mCoinAudio4.setOnCoinClickListener((progress, value) -> coinAudioClicked(progress, value, 4));
+        mCoinAudio5.setOnCoinClickListener((progress, value) -> coinAudioClicked(progress, value, 5));
+        mCoinAudio6.setOnCoinClickListener((progress, value) -> coinAudioClicked(progress, value, 6));
+    }
 
-        ActivityResultLauncher<Intent> someActivityResultLauncher = ((MainActivity) mContext).registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(), result -> {
-                    Intent data = result.getData();
-                    if (data != null) {
-                        int progress = data.getIntExtra("progress", -1);
-                        long position = data.getLongExtra("position", -1);
-                        switch (result.getResultCode()) {
-                            case PlayActivity.MEDIA_TYPE_VIDEO:
-                                User.setVideoProgressAndValue(week, progress, position, this::update);
-                                break;
-                            case PlayActivity.MEDIA_TYPE_TEXT:
-                                User.setTextProgressAndValue(week, progress, position, this::update);
-                                break;
-                            case PlayActivity.MEDIA_TYPE_AUDIO:
-                                User.setAudioProgressAndValue(week, progress, position, this::update);
-                                break;
-                        }
+    private void coinVideoClicked(int progress, int value) {
+        Intent intent = new Intent(mContext, PlayActivity.class);
+        intent.putExtra("maintitle", "Semana " + week);
+        intent.putExtra("value", value);
+        intent.putExtra("progress", progress);
+        intent.putExtra("title", videoTitle);
+        intent.putExtra("week", week);
+        intent.putExtra("text", videoText);
+        intent.putExtra("url", "gs://neurosaude-firmino.appspot.com/video/video_week" + week + ".mp4");
+        buttonsVisibleChangeListener.onCoinClickedListener(intent);
+    }
 
+    private void coinTextClicked(int progress, int value) {
+        Intent intent = new Intent(mContext, PlayActivity.class);
+        intent.putExtra("maintitle", "Semana " + week);
+        intent.putExtra("value", value);
+        intent.putExtra("progress", progress);
+        intent.putExtra("title", textTitle);
+        intent.putExtra("week", week);
+        intent.putExtra("text", textText);
+        intent.putExtra("url", "gs://neurosaude-firmino.appspot.com/text/text_week" + week + ".pdf");
 
-                    }
-                });
+        buttonsVisibleChangeListener.onCoinClickedListener(intent);
+    }
 
-        mButtonVideo.setOnClickListener(view -> {
-            Intent videooActivityIntent = new Intent(mContext, PlayActivity.class);
-            videooActivityIntent.putExtra("maintitle", "Semana " + week);
-            videooActivityIntent.putExtra("value", videoValue);
-            videooActivityIntent.putExtra("progress", videoProgress);
-            videooActivityIntent.putExtra("title", videoTitle);
-            videooActivityIntent.putExtra("text", videoText);
-            videooActivityIntent.putExtra("url", "gs://neurosaude-firmino.appspot.com/video/video_week" + week + ".mp4");
-            someActivityResultLauncher.launch(videooActivityIntent);
-        });
+    private void coinAudioClicked(int progress, int value, int audioIndex) {
+        Intent intent = new Intent(mContext, PlayActivity.class);
+        intent.putExtra("maintitle", "Semana " + week);
+        intent.putExtra("value", value);
+        intent.putExtra("progress", progress);
+        intent.putExtra("title", audioTitle);
+        intent.putExtra("text", audioText);
+        intent.putExtra("week", week);
+        intent.putExtra("audioIndex", audioIndex);
+        intent.putExtra("url", "gs://neurosaude-firmino.appspot.com/audio/audio_week" + week + ".mp3");
 
-        mButtonText.setOnClickListener(view -> {
-            Intent textActivityIntent = new Intent(mContext, PlayActivity.class);
-            textActivityIntent.putExtra("value", textValue);
-            textActivityIntent.putExtra("progress", textProgress);
-            textActivityIntent.putExtra("title", textTitle);
-            textActivityIntent.putExtra("text", textText);
-            textActivityIntent.putExtra("url", "gs://neurosaude-firmino.appspot.com/text/text_week" + week + ".pdf");
-            textActivityIntent.putExtra("maintitle", "Semana " + week);
-            someActivityResultLauncher.launch(textActivityIntent);
-        });
-
-        mButtonAudio.setOnClickListener(view -> {
-            Intent audioActivityIntent = new Intent(mContext, PlayActivity.class);
-            audioActivityIntent.putExtra("maintitle", "Semana " + week);
-            audioActivityIntent.putExtra("value", audioValue);
-            audioActivityIntent.putExtra("progress", audioProgress);
-            audioActivityIntent.putExtra("title", audioTitle);
-            audioActivityIntent.putExtra("text", audioText);
-            audioActivityIntent.putExtra("url", "gs://neurosaude-firmino.appspot.com/audio/audio_week" + week + ".mp3");
-            someActivityResultLauncher.launch(audioActivityIntent);
-        });
-
-
+        buttonsVisibleChangeListener.onCoinClickedListener(intent);
     }
 
     public int getProgress() {
-        return (videoProgress + textProgress + audioProgress);
+        int progress = 0;
+        progress += mCoinVideo.getProgress();
+        progress += mCoinText.getProgress();
+        progress += mCoinAudio1.getProgress();
+        progress += mCoinAudio2.getProgress();
+        progress += mCoinAudio3.getProgress();
+        progress += mCoinAudio4.getProgress();
+        progress += mCoinAudio5.getProgress();
+        progress += mCoinAudio6.getProgress();
+        return progress / 8;
     }
 
     public void setOnButtonsVisibleChangeListener(OnButtonsVisibleChangeListener onButtonsVisibleChangeListener) {
         this.onButtonsVisibleChangeListener = onButtonsVisibleChangeListener;
     }
 
+    public void setOnCoinClicked(OnCoinClickedListener listener) {
+        this.buttonsVisibleChangeListener = listener;
+    }
+
     public interface OnButtonsVisibleChangeListener {
         void onButtonsVisibleChangeListener(WeekView view);
+    }
+
+    public interface OnCoinClickedListener {
+        void onCoinClickedListener(Intent intent);
     }
 }

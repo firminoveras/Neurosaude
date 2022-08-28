@@ -125,28 +125,29 @@ public class LoginActivity extends AppCompatActivity {
         newUser.put("username", mAccount.getDisplayName());
         newUser.put("image", String.valueOf(mAccount.getPhotoUrl()));
 
-        mFirestore.collection("users").document(Objects.requireNonNull(mAccount.getEmail())).set(newUser).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                try {
-                    if (mAccount.getPhotoUrl() != null) {
-                        Uri uri = Uri.parse(mAccount.getPhotoUrl().toString());
-                        URL newurl = new URL(uri.toString());
-                        User.image = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
-                    } else
-                        User.image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_google_logged);
-
-                } catch (IOException e) {
-                    MessageAlert.create(this, MessageAlert.TYPE_ALERT, "Não foi possível carregar imagem da conta.");
-                }
-                runOnUiThread(() -> {
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
+        new Thread(() -> {
+            try {
+                if (mAccount.getPhotoUrl() != null) {
+                    Uri uri = Uri.parse(mAccount.getPhotoUrl().toString());
+                    URL newurl = new URL(uri.toString());
+                    User.image = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
+                } else
+                    User.image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_google_logged);
+                mFirestore.collection("users").document(Objects.requireNonNull(mAccount.getEmail())).set(newUser).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        runOnUiThread(() -> {
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
+                        });
+                    } else {
+                        MessageAlert.create(this, MessageAlert.TYPE_ERRO, "Não foi possível carregar dados da conta, tente novamente mais tarde.");
+                        signOut();
+                    }
                 });
-            } else {
-                MessageAlert.create(this, MessageAlert.TYPE_ERRO, "Não foi possível carregar dados da conta, tente novamente mais tarde.");
-                signOut();
+            } catch (IOException e) {
+                MessageAlert.create(this, MessageAlert.TYPE_ALERT, "Não foi possível carregar imagem da conta.");
             }
-        });
+        }).start();
     }
 
     private void setLoadingMode() {

@@ -12,17 +12,17 @@
         android:id="@+id/Main_Bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
-        android:gravity="center"
-        android:background="@color/color_background">
+        android:background="@color/color_background"
+        android:gravity="center">
 
-        <include layout="@layout/appbar_layout"/>
+        <include layout="@layout/appbar_layout" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="24dp"
+        android:background="#57585A"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".MainActivity"
         tools:showIn="@layout/activity_main">
@@ -31,31 +31,7 @@
             android:id="@+id/mWeekViewList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <com.firmino.neurossaude.views.WeekView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:week="1" />
-
-            <com.firmino.neurossaude.views.WeekView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:subtitle="Subtitulo de Exemplo"
-                app:week="2" />
-
-            <com.firmino.neurossaude.views.WeekView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:subtitle="Subtitulo de Exemplo"
-                app:week="3" />
-
-            <com.firmino.neurossaude.views.WeekView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:subtitle="Subtitulo de Exemplo"
-                app:week="4" />
-        </LinearLayout>
+            android:orientation="vertical" />
 
 
     </androidx.core.widget.NestedScrollView>

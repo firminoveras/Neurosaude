@@ -128,9 +128,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         mLoadingText.setVisibility(View.VISIBLE);
         mLoadingText.setText(R.string.saving);
         Intent intent = new Intent();
-        System.out.println(getProgress());
         intent.putExtra("progress", Math.max(lastProgress, getProgress()));
         intent.putExtra("position", lastPosition);
+        intent.putExtra("week", getIntent().getExtras().getInt("week",-1));
+        intent.putExtra("mediaType", mediaType);
+        intent.putExtra("audioIndex", getIntent().getExtras().getInt("audioIndex",-1));
         setResult(mediaType, intent);
         mPlayer.release();
         mPDFViewer.recycle();
