@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,7 +37,6 @@ import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
     private Button mLoginButton;
-    private Button mLogoffButton;
 
     private FirebaseAuth mAuth;
     private FirebaseUser mAccount;
@@ -50,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mLoginButton = findViewById(R.id.Login_Login);
-        mLogoffButton = findViewById(R.id.Login_Logoff);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.web_client_id))
@@ -62,15 +61,16 @@ public class LoginActivity extends AppCompatActivity {
         authActivityResultLauncher = createAuthResultLauncher();
 
         mLoginButton.setOnClickListener(v -> signIn());
-        mLogoffButton.setOnClickListener(v -> signOut());
 
         mFirestore = FirebaseFirestore.getInstance();
     }
 
     private ActivityResultLauncher<Intent> createAuthResultLauncher() {
+
         return registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK) {
                 try {
+
                     GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(result.getData()).getResult(ApiException.class);
                     AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
                     mAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
@@ -93,11 +93,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         mAccount = mAuth.getCurrentUser();
-        if (mAccount != null) {
-            mLoginButton.setText(String.format("Continuar como %s", mAccount.getDisplayName()));
-            mLoginButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_google_logged, 0, 0, 0);
-            mLogoffButton.setVisibility(View.VISIBLE);
-        }
+        if (mAccount != null) mLoginButton.performClick();
     }
 
     private void signIn() {
@@ -133,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                     User.image = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
                 } else
                     User.image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_google_logged);
-                mFirestore.collection("users").document(Objects.requireNonNull(mAccount.getEmail())).set(newUser).addOnCompleteListener(task -> {
+                mFirestore.collection("users").document(Objects.requireNonNull(mAccount.getEmail())).set(newUser, SetOptions.merge()).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         runOnUiThread(() -> {
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));

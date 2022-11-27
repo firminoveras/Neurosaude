@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -31,7 +32,7 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class PlayActivity extends AppCompatActivity implements View.OnClickListener {
+public class PlayActivity extends AppCompatActivity implements View.OnClickListener, Runnable {
 
     private TextView mLoadingText;
     private ProgressBar mProgressBar;
@@ -50,6 +51,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isControlsVisibles = false;
     private boolean isLoaded = false;
     private int mediaType;
+    private long millisOnMedia;
+
+    private long mStartTime = 0L;
+    private final Handler mTimeHandler = new Handler();
 
     public final static int MEDIA_TYPE_AUDIO = 1;
     public final static int MEDIA_TYPE_VIDEO = 2;
@@ -102,6 +107,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
         loadMedia(url);
 
+        if (mStartTime == 0L) {
+            mStartTime = SystemClock.uptimeMillis();
+            mTimeHandler.removeCallbacks(this);
+            mTimeHandler.postDelayed(this, 100);
+        }
+
     }
 
     @Override
@@ -119,6 +130,18 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onPause() {
+        mTimeHandler.removeCallbacks(this);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mTimeHandler.postDelayed(this, 100);
+    }
+
+    @Override
     public void onBackPressed() {
         mPlayer.pause();
         setControlsVisible(false);
@@ -130,9 +153,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent();
         intent.putExtra("progress", Math.max(lastProgress, getProgress()));
         intent.putExtra("position", lastPosition);
-        intent.putExtra("week", getIntent().getExtras().getInt("week",-1));
+        intent.putExtra("week", getIntent().getExtras().getInt("week", -1));
         intent.putExtra("mediaType", mediaType);
-        intent.putExtra("audioIndex", getIntent().getExtras().getInt("audioIndex",-1));
+        intent.putExtra("audioIndex", getIntent().getExtras().getInt("audioIndex", -1));
+        intent.putExtra("millisOnMedia", millisOnMedia);
         setResult(mediaType, intent);
         mPlayer.release();
         mPDFViewer.recycle();
@@ -365,4 +389,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 TimeUnit.MILLISECONDS.toSeconds(duration) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration)));
     }
 
+    @Override
+    public void run() {
+        final long start = mStartTime;
+        millisOnMedia = SystemClock.uptimeMillis() - start;
+        mTimeHandler.postDelayed(this, 1000);
+    }
 }

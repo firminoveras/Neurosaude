@@ -4,11 +4,8 @@
     <color name="color_foreground">#66C8CB</color>
     <color name="color_gray">#EEEFF1</color>
     <color name="color_background2">#062458</color>
-    <color name="color_foreground2">#062458</color>
-    <color name="color_gray2">#B3C2E3</color>
     <color name="color_white">#FFFFFF</color>
     <color name="color_black">#000000</color>
-    <color name="color_red">#C62828</color>
-    <color name="color_dark_red">#751F1F</color>
+    <color name="color_background_darker">#2A7080</color>
 
 </resources>

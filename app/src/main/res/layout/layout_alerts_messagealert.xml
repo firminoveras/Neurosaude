@@ -2,16 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/Toast_Main"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="wrap_content"
     android:background="@drawable/bg_rounded_square"
     android:backgroundTint="@android:color/holo_green_dark"
     android:padding="10dp"
+    android:alpha=".9"
     android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/Toast_Icon"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_done"
         tools:ignore="ContentDescription" />
@@ -21,11 +22,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textSize="16sp"
+        android:textSize="12sp"
         android:textColor="@android:color/white"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
-        android:fontFamily="monospace"
+        android:gravity="center"
+        android:fontFamily="@font/comfortaa"
         android:text=""/>
 
 </LinearLayout>

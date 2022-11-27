@@ -1,25 +1,12 @@
 <resources>
     <string name="app_name">Neurosaude</string>
-    <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="web_client_id" translatable="false">301545986602-uvuf98nk2oogaocou4k07f2n1lb97agi.apps.googleusercontent.com</string>
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="neurosaude">Neurosaúde</string>
     <string name="subtitle">Redução de Estresse e Ansiedade</string>
     <string name="login">Entrar com o Google</string>
     <string name="info_authors">Em desenvolvimento</string>
     <string name="knowmore">Toque para saber mais</string>
-    <string name="logoff">Sair dessa conta</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="action_settings">Settings</string>
-    <string name="video">Vídeo</string>
-    <string name="text">Texto</string>
-    <string name="audio">Áudio</string>
-    <string name="zero_percent">0%</string>
     <string name="open_controls">abra os controles arrastando para cima</string>
     <string name="loading">Carregando…</string>
     <string name="restart">Recomeçar</string>
@@ -31,14 +18,26 @@
     <string name="volup">+ Volume</string>
     <string name="voldown">- Volume</string>
     <string name="back">Voltar</string>
-    <string name="done">Concluir</string>
     <string name="pause">Pausar</string>
     <string name="saving">Salvando…</string>
-    <string name="empty">" "</string>
     <string name="init">Início</string>
     <string name="voltar">Voltar</string>
     <string name="avan_ar">Avançar</string>
     <string name="resetzoom">Restaurar</string>
-    <string name="welcome">Bem Vindo!</string>
     <string name="progress">Progresso</string>
+    <string name="alarm_title">Notificações de Lembretes de Práticas</string>
+    <string name="alarm_subtitle">Estudos apontam que a melhor forma de criar um hábito é definir um horário fixo, de preferência antes ou após momentos chaves do seu dia (ao acordar, refeições, dormir, etc.), pensando nisso, para te ajudar a a extrair o máximo desse curso gostaríamos que você escolhesse um horário para que o aplicativo envie notificações lembrando-o(a) de realizar sua prática diária.</string>
+    <string name="enable_reminder">Habilitar Lembretes</string>
+    <string name="initvideo">No pequeno vídeo a baixo, falarei brevemente sobre quem eu sou e vou te levar em um passeio pelo aplicativo, explicando tudo o que você precisa saber para extrair o máximo dessa ferramenta nos próximos dias!</string>
+    <string name="close_and_save">Fechar e Salvar</string>
+    <string name="lembretes">Lembretes</string>
+    <string name="offline_mode">Modo Offline</string>
+    <string name="exit">Sair</string>
+    <string name="week">Semana</string>
+    <string name="time">Tempo</string>
+    <string name="exit_dialog">Selecione a ação que deseja realizar ao sair do aplicativo. Se desejar apenas sair do aplicativo e manter sua conta logada, toque na opção Sair do Aplicativo. Se desejar sair do aplicativo e da sua conta, selecione a opção Sair da Conta.</string>
+    <string name="cancel">Cancelar</string>
+    <string name="exit_app">Sair do Aplicativo</string>
+    <string name="logout">Sair da Conta</string>
+    <string name="back_pressed">Todas as suas interações foram salvas na sua conta atual. Você deseja sair do aplicativo?</string>
 </resources>

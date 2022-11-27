@@ -25,7 +25,7 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/bg_text"
         android:elevation="2dp"
-        android:fontFamily="sans-serif-medium"
+        android:fontFamily="@font/comfortaa"
         android:paddingStart="12dp"
         android:paddingTop="6dp"
         android:paddingEnd="12dp"
@@ -38,40 +38,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/line0" />
 
-    <TextView
-        android:id="@+id/mWeekPercent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="-4dp"
-        android:background="@drawable/bg_text2"
-        android:elevation="1dp"
-        android:fontFamily="sans-serif-medium"
-        android:paddingStart="12dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="10dp"
-        android:textColor="@color/color_white"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mWeekTitle" />
 
     <ImageView
         android:id="@+id/mWeekLockIcon"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:padding="12dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="-10dp"
+        android:alpha=".92"
         android:background="@drawable/bg_text2"
-        android:paddingStart="12dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="4dp"
+        android:elevation="4dp"
         android:src="@drawable/ic_lock"
         app:layout_constraintBottom_toBottomOf="@+id/mWeekTitle"
-        app:layout_constraintEnd_toStartOf="@+id/mWeekTitle"
+        app:layout_constraintEnd_toEndOf="@+id/mWeekTitle"
+        app:layout_constraintStart_toStartOf="@+id/mWeekTitle"
         app:layout_constraintTop_toTopOf="@+id/mWeekTitle" />
+
+    <ProgressBar
+        android:id="@+id/mWeekPercent"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:elevation="2dp"
+        android:max="100"
+        android:progress="50"
+        android:progressTint="#114B59"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/mWeekTitle"
+        app:layout_constraintStart_toStartOf="@+id/mWeekTitle"
+        app:layout_constraintTop_toBottomOf="@+id/line0" />
 
     <ImageView
         android:id="@+id/line1"
@@ -92,7 +86,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:background="@drawable/bg_background_week_buttons"
-        android:backgroundTint="#4B4B4D"
+        android:backgroundTint="#AA4B4B4D"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -122,7 +116,6 @@
             app:layout_constraintTop_toBottomOf="@+id/mWeekSubTitle" />
 
         <ImageView
-            android:id="@+id/line22"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_below="@+id/mWeekSubTitle"
@@ -139,7 +132,6 @@
             app:layout_constraintTop_toBottomOf="@+id/mWeekButtonText" />
 
         <ImageView
-            android:id="@+id/line32"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:src="@drawable/bg_line_right"
@@ -188,7 +180,6 @@
             app:layout_constraintTop_toBottomOf="@+id/mWeekButtonAudio5" />
 
         <ImageView
-            android:id="@+id/line9"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:src="@drawable/bg_line_right"
@@ -200,7 +191,7 @@
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:background="@drawable/circular_subtitle"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/comfortaa"
             android:gravity="center"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
@@ -214,11 +205,10 @@
             app:layout_constraintTop_toBottomOf="@+id/line" />
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:layout_margin="12dp"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/comfortaa"
             android:gravity="center"
             android:text="Dia 01"
             android:textAllCaps="true"
@@ -233,7 +223,7 @@
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:layout_margin="12dp"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/comfortaa"
             android:gravity="center"
             android:text="Dia 02"
             android:textAllCaps="true"
@@ -245,11 +235,10 @@
             app:layout_constraintTop_toTopOf="@+id/mWeekButtonAudio1" />
 
         <TextView
-            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:layout_margin="12dp"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/comfortaa"
             android:gravity="center"
             android:text="Dia 03"
             android:textAllCaps="true"
@@ -264,7 +253,7 @@
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:layout_margin="12dp"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/comfortaa"
             android:gravity="center"
             android:text="Dia 04"
             android:textAllCaps="true"
@@ -276,11 +265,10 @@
             app:layout_constraintTop_toTopOf="@+id/mWeekButtonAudio3" />
 
         <TextView
-            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:layout_margin="12dp"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/comfortaa"
             android:gravity="center"
             android:text="Dia 05"
             android:textAllCaps="true"
@@ -292,11 +280,10 @@
             app:layout_constraintTop_toTopOf="@+id/mWeekButtonAudio4" />
 
         <TextView
-            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:layout_margin="12dp"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/comfortaa"
             android:gravity="center"
             android:text="Dia 06"
             android:textAllCaps="true"
@@ -308,11 +295,10 @@
             app:layout_constraintTop_toTopOf="@+id/mWeekButtonAudio5" />
 
         <TextView
-            android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:layout_margin="12dp"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/comfortaa"
             android:gravity="center"
             android:text="Dia 07"
             android:textAllCaps="true"
@@ -388,7 +374,6 @@
             app:coin_type="audio"
             app:layout_constraintEnd_toEndOf="@+id/line8"
             app:layout_constraintTop_toBottomOf="@+id/line8" />
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

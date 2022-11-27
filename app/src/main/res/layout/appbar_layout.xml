@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_background"
-    tools:ignore="ContentDescription">
+    tools:ignore="ContentDescription,Overdraw">
 
     <ImageView
         android:id="@+id/Main_Bar_Background"
         android:layout_width="match_parent"
-        android:layout_gravity="center"
         android:layout_height="@dimen/app_bar_height"
+        android:layout_gravity="center"
         android:alpha=".1"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_icon"
@@ -25,7 +25,6 @@
         android:padding="12dp">
 
         <TextView
-            android:id="@+id/Login_Title"
             android:layout_width="wrap_content"
             android:layout_height="64dp"
             android:layout_gravity="center_horizontal"
@@ -38,16 +37,19 @@
             android:textSize="32sp"
             app:drawableStartCompat="@drawable/ic_icon" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:baselineAligned="false"
             android:orientation="horizontal">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:id="@+id/AppBar_Image"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp">
 
                 <ImageView
                     android:layout_width="150dp"
@@ -68,6 +70,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
 
+                    <ProgressBar
+                        android:id="@+id/Main_Bar_UserImageProgress"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:alpha=".8"
+                        android:indeterminate="true"
+                        android:indeterminateTint="@color/color_gray"
+                        android:scaleX="1.4"
+                        android:scaleY="1.4"
+                        android:visibility="gone" />
+
                 </androidx.cardview.widget.CardView>
 
                 <TextView
@@ -78,7 +91,7 @@
                     android:layout_centerInParent="true"
                     android:background="@drawable/bg_button_ripple"
                     android:elevation="2dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/comfortaa"
                     android:lines="1"
                     android:paddingStart="12dp"
                     android:paddingTop="4dp"
@@ -87,14 +100,12 @@
                     android:textColor="@color/color_background"
                     android:textSize="14sp" />
 
-
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/Main_ProgressLayout"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_toEndOf="@+id/AppBar_Image"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -112,7 +123,7 @@
                         android:layout_gravity="start"
                         android:background="@drawable/bg_button_ripple"
                         android:elevation="1dp"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="@font/comfortaa"
                         android:gravity="center"
                         android:lines="1"
                         android:paddingStart="12dp"
@@ -148,24 +159,24 @@
                         android:layout_gravity="start"
                         android:background="@drawable/bg_button_ripple"
                         android:elevation="1dp"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="@font/comfortaa"
                         android:gravity="center"
                         android:lines="1"
                         android:paddingStart="12dp"
                         android:paddingTop="4dp"
                         android:paddingEnd="12dp"
                         android:paddingBottom="4dp"
-                        android:text="Semana"
+                        android:text="@string/week"
                         android:textColor="@color/color_background"
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/Main_Bar_Week"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="sans-serif-light"
                         android:gravity="center"
                         android:lines="1"
-                        android:text="1/4"
                         android:textColor="@color/color_background"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -184,33 +195,32 @@
                         android:layout_gravity="start"
                         android:background="@drawable/bg_button_ripple"
                         android:elevation="1dp"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="@font/comfortaa"
                         android:gravity="center"
                         android:lines="1"
                         android:paddingStart="12dp"
                         android:paddingTop="4dp"
                         android:paddingEnd="12dp"
                         android:paddingBottom="4dp"
-                        android:text="Tempo"
+                        android:text="@string/time"
                         android:textColor="@color/color_background"
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/Main_Bar_Time"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="sans-serif-light"
                         android:gravity="center"
                         android:lines="1"
-                        android:text="1d3h20m"
                         android:textColor="@color/color_background"
                         android:textSize="14sp" />
                 </LinearLayout>
 
-
             </LinearLayout>
 
-        </LinearLayout>
-    </LinearLayout>
+        </RelativeLayout>
 
+    </LinearLayout>
 
 </FrameLayout>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Back_Main"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/color_background"
+    android:orientation="vertical"
+    tools:ignore="Overdraw">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_background_darker"
+        android:fontFamily="@font/comfortaa"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="@string/exit"
+        android:textColor="@color/color_white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:drawableStartCompat="@drawable/ic_exit" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:alpha=".6"
+        android:gravity="center"
+        android:paddingStart="6dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="6dp"
+        android:text="@string/back_pressed"
+        android:textColor="@color/color_white"
+        android:textSize="12sp"
+        android:textStyle="italic" />
+
+
+    <TextView
+        android:id="@+id/Back_Cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:background="@color/color_background_darker"
+        android:drawablePadding="6dp"
+        android:fontFamily="@font/comfortaa"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="@string/cancel"
+        android:textColor="@color/color_white"
+        android:textSize="18sp"
+        app:drawableStartCompat="@drawable/ic_back"
+        app:drawableTint="@color/color_white" />
+
+    <TextView
+        android:id="@+id/Back_Close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:background="@color/color_background_darker"
+        android:drawablePadding="6dp"
+        android:fontFamily="@font/comfortaa"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="@string/exit_app"
+        android:textColor="@color/color_white"
+        android:textSize="18sp"
+        app:drawableStartCompat="@drawable/ic_close"
+        app:drawableTint="@color/color_white" />
+</LinearLayout>
+

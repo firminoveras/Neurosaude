@@ -9,7 +9,7 @@
     tools:ignore="ContentDescription">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/Main_Bar"
+        android:id="@+id/Main_AppBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:background="@color/color_background"
@@ -19,32 +19,215 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#57585A"
+        android:layout_marginTop="258dp"
+        android:background="#57585A">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitStart"
+            android:src="@drawable/bg_braincells"
+            android:translationX="-6dp" />
+
+        <ImageView
+            android:rotation="180"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitStart"
+            android:src="@drawable/bg_braincells"
+            android:translationX="6dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_braincells_transparency" />
+
+        <ProgressBar
+            android:id="@+id/Main_Progress_Loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/color_background"
+            android:progressTint="@color/color_background" />
+    </FrameLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/Main_ScrollLayout_Weeks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".MainActivity"
+        tools:ignore="SpeakableTextPresentCheck"
         tools:showIn="@layout/activity_main">
 
         <LinearLayout
-            android:id="@+id/mWeekViewList"
+            android:id="@+id/Main_Layout_WeekViews"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" />
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:src="@drawable/bg_line_vertical" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:src="@drawable/bg_line_vertical" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/Main_Button_InitialVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/color_background"
+                app:srcCompat="@drawable/ic_course"
+                tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:src="@drawable/bg_line_vertical" />
+
+            <LinearLayout
+                android:id="@+id/mWeekViewList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:src="@drawable/bg_line_vertical" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/color_background"
+                app:srcCompat="@drawable/ic_done"
+                tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/Main_Button_Settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:visibility="gone"
-        app:layout_anchor="@id/Main_Bar"
-        app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@android:drawable/ic_dialog_email"
-        tools:ignore="ContentDescription" />
+        android:layout_gravity="end|bottom"
+        android:layout_margin="12dp"
+        android:backgroundTint="@color/color_background"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_settings"
+        tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
+
+    <LinearLayout
+        android:id="@+id/Main_Layout_SettingsButtons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:alpha="0"
+        android:background="@drawable/bg_fablayout"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:padding="6dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:translationX="@dimen/MainLayoutButtonsWidth">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/comfortaa"
+                android:gravity="center"
+                android:text="@string/lembretes"
+                android:textColor="@color/color_white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/Main_Button_Alarm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:backgroundTint="@color/color_background"
+                app:srcCompat="@drawable/ic_alarm"
+                tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:translationX="@dimen/MainLayoutButtonsWidth">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/comfortaa"
+                android:gravity="center"
+                android:text="@string/offline_mode"
+                android:textColor="@color/color_white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:backgroundTint="@color/color_background"
+                app:srcCompat="@drawable/ic_offlinemode"
+                tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:translationX="@dimen/MainLayoutButtonsWidth">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/comfortaa"
+                android:gravity="center"
+                android:text="@string/exit"
+                android:textColor="@color/color_white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/Main_Button_Exit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:backgroundTint="@color/color_background"
+                app:srcCompat="@drawable/ic_exit"
+                tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
+
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="68dp" />
+
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,7 +1,9 @@
 package com.firmino.neurossaude.user;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
+import com.firmino.neurossaude.views.WeekView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
@@ -18,26 +20,71 @@ public class User {
     public static String username;
     public static Bitmap image;
 
-    public static void setAudioValues(int week, int audioIndex, @Nullable Integer audioProgress, @Nullable Long audioValue, OnSetProgressListener listener) {
+    public static void setAudioValues(int week, int audioIndex, @Nullable Integer audioProgress, @Nullable Long audioValue, Long millisOnMedia, OnSetProgressListener listener) {
         Map<String, Object> newProgresses = new HashMap<>();
         if (audioProgress != null)
             newProgresses.put("audio" + audioIndex + "Progress", audioProgress);
         if (audioValue != null) newProgresses.put("audio" + audioIndex + "Value", audioValue);
-        FirebaseFirestore.getInstance().collection("users/" + email + "/progress/").document("week" + week).set(newProgresses, SetOptions.merge()).addOnCompleteListener(task -> listener.onSetProgressListener());
+
+        FirebaseFirestore.getInstance().collection("users/" + email + "/progress/").document("week" + week).get().addOnCompleteListener(task1 -> {
+            Long actualMillis = task1.getResult().getLong("millisOnAudio" + audioIndex + "Media");
+            if (actualMillis == null) actualMillis = 0L;
+            actualMillis += millisOnMedia;
+            newProgresses.put("millisOnAudio" + audioIndex + "Media", actualMillis);
+
+            FirebaseFirestore.getInstance().collection("users/" + email + "/progress/").document("week" + week).set(newProgresses, SetOptions.merge()).addOnCompleteListener(task -> listener.onSetProgressListener());
+        });
     }
 
-    public static void setVideoValues(int week, @Nullable Integer videoProgress, @Nullable Long videoValue, OnSetProgressListener listener) {
+    public static void setVideoValues(int week, @Nullable Integer videoProgress, @Nullable Long videoValue, Long millisOnMedia, OnSetProgressListener listener) {
         Map<String, Object> newProgresses = new HashMap<>();
         if (videoProgress != null) newProgresses.put("videoProgress", videoProgress);
         if (videoValue != null) newProgresses.put("videoValue", videoValue);
-        FirebaseFirestore.getInstance().collection("users/" + email + "/progress/").document("week" + week).set(newProgresses, SetOptions.merge()).addOnCompleteListener(task -> listener.onSetProgressListener());
+
+        FirebaseFirestore.getInstance().collection("users/" + email + "/progress/").document("week" + week).get().addOnCompleteListener(task1 -> {
+            Long actualMillis = task1.getResult().getLong("millisOnVideoMedia");
+            if (actualMillis == null) actualMillis = 0L;
+            actualMillis += millisOnMedia;
+            newProgresses.put("millisOnVideoMedia", actualMillis);
+            FirebaseFirestore.getInstance().collection("users/" + email + "/progress/").document("week" + week).set(newProgresses, SetOptions.merge()).addOnCompleteListener(task -> listener.onSetProgressListener());
+        });
     }
 
-    public static void setTextValues(int week, @Nullable Integer textProgress, @Nullable Long textValue, OnSetProgressListener listener) {
+    public static void setTextValues(int week, @Nullable Integer textProgress, @Nullable Long textValue, Long millisOnMedia, OnSetProgressListener listener) {
         Map<String, Object> newProgresses = new HashMap<>();
         if (textProgress != null) newProgresses.put("textProgress", textProgress);
         if (textValue != null) newProgresses.put("textValue", textValue);
-        FirebaseFirestore.getInstance().collection("users/" + email + "/progress/").document("week" + week).set(newProgresses, SetOptions.merge()).addOnCompleteListener(task -> listener.onSetProgressListener());
+
+        FirebaseFirestore.getInstance().collection("users/" + email + "/progress/").document("week" + week).get().addOnCompleteListener(task1 -> {
+            Long actualMillis = task1.getResult().getLong("millisOnTextMedia");
+            if (actualMillis == null) actualMillis = 0L;
+            actualMillis += millisOnMedia;
+            newProgresses.put("millisOnTextMedia", actualMillis);
+            FirebaseFirestore.getInstance().collection("users/" + email + "/progress/").document("week" + week).set(newProgresses, SetOptions.merge()).addOnCompleteListener(task -> listener.onSetProgressListener());
+        });
+    }
+
+    public static void getTimeOnMediaOnAllWeeks(OnGetTimeOnMediaOnAllWeeksListener listener) {
+        FirebaseFirestore.getInstance().collection("users/" + email + "/progress/").get().addOnCompleteListener(task -> {
+            long millis = 0L;
+            List<Long> millisList = new ArrayList<>();
+            for (DocumentSnapshot document : task.getResult().getDocuments()) {
+                millisList.add(document.getLong("millisOnTextMedia"));
+                millisList.add(document.getLong("millisOnVideoMedia"));
+                millisList.add(document.getLong("millisOnAudio1Media"));
+                millisList.add(document.getLong("millisOnAudio2Media"));
+                millisList.add(document.getLong("millisOnAudio3Media"));
+                millisList.add(document.getLong("millisOnAudio4Media"));
+                millisList.add(document.getLong("millisOnAudio5Media"));
+                millisList.add(document.getLong("millisOnAudio6Media"));
+            }
+            for (Long m : millisList) if (m != null) millis += m;
+
+            int minutes = (int) ((millis / (1000 * 60)) % 60);
+            int hours = (int) ((millis / (1000 * 60 * 60)));
+
+            listener.onGetTimeOnMediaOnAllWeeksListener(hours, minutes);
+        });
     }
 
     public static void getWeekValues(int week, OnGetWeekValuesListener listener) {
@@ -84,44 +131,25 @@ public class User {
         });
     }
 
-    public static void getWeekCount(OnGetWeekCountListener listener) {
-        FirebaseFirestore.getInstance().collection("texts").get().addOnCompleteListener(task -> listener.onGetWeekCountListener(task.getResult().size()));
-    }
 
-
-    public static void getWeekTexts(int week, OnGetWeekInfoListener listener) {
-        FirebaseFirestore.getInstance().collection("texts").document("week" + week).get().addOnCompleteListener(task -> {
-            String videoTitle = task.getResult().getString("videoTitle");
-            String videoText = task.getResult().getString("videoText");
-            String audioTitle = task.getResult().getString("audioTitle");
-            String audioText = task.getResult().getString("audioText");
-            String textTitle = task.getResult().getString("textTitle");
-            String textText = task.getResult().getString("textText");
-            String title = task.getResult().getString("title");
-            listener.onGetWeekInfoListener(title, videoTitle, videoText, audioTitle, audioText, textTitle, textText);
-        });
-    }
-
-    public static void getTexts(OnGetTextsListener listener) {
-        FirebaseFirestore.getInstance().collection("texts").get().addOnCompleteListener(task -> {
-            List<String> title = new ArrayList<>(), videoTitle = new ArrayList<>(), videoText = new ArrayList<>(), audioTitle = new ArrayList<>(), audioText = new ArrayList<>(), textTitle = new ArrayList<>(), textText = new ArrayList<>();
+    public static void getWeekViews(Context context, OnGetTextsListener listener) {
+        FirebaseFirestore.getInstance().collection("weeks").get().addOnCompleteListener(task -> {
+            List<WeekView> weekViews = new ArrayList<>();
             for (DocumentSnapshot doc : task.getResult().getDocuments()) {
-                title.add(doc.getString("title"));
-                videoTitle.add(doc.getString("videoTitle"));
-                videoText.add(doc.getString("videoText"));
-                audioTitle.add(doc.getString("audioTitle"));
-                audioText.add(doc.getString("audioText"));
-                textTitle.add(doc.getString("textTitle"));
-                textText.add(doc.getString("textText"));
+                int week = Integer.parseInt(doc.getId());
+                String title = doc.getString("title");
+                String videoTitle = doc.getString("videoTitle");
+                String videoText = doc.getString("videoText");
+                String audioTitle = doc.getString("audioTitle");
+                String audioText = doc.getString("audioText");
+                String textTitle = doc.getString("textTitle");
+                String textText = doc.getString("textText");
+                weekViews.add(new WeekView(context, week, title, videoTitle, videoText, audioTitle, audioText, textTitle, textText));
             }
-            listener.onGetTextsListener(title, videoTitle, videoText, audioTitle, audioText, textTitle, textText);
+            listener.onGetTextsListener(weekViews);
         });
     }
 
-
-    public interface OnGetWeekInfoListener {
-        void onGetWeekInfoListener(String title, String videoTitle, String videoText, String audioTitle, String audioText, String textTitle, String textText);
-    }
 
     public interface OnGetWeekValuesListener {
         void onGetWeekValuesListener(int videoProgress, int videoValue, int textProgress, int textValue, List<Integer> audioProgress, List<Integer> audioValue);
@@ -131,12 +159,13 @@ public class User {
         void onSetProgressListener();
     }
 
-    public interface OnGetWeekCountListener {
-        void onGetWeekCountListener(int count);
-    }
 
     public interface OnGetTextsListener {
-        void onGetTextsListener(List<String> title, List<String> videoTitle, List<String> videoText, List<String> audioTitle, List<String> audioText, List<String> textTitle, List<String> textText);
+        void onGetTextsListener(List<WeekView> weekViews);
+    }
+
+    public interface OnGetTimeOnMediaOnAllWeeksListener {
+        void onGetTimeOnMediaOnAllWeeksListener(int hours, int minutes);
     }
 
 
