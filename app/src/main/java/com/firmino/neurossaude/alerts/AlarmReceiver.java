@@ -1,5 +1,7 @@
 package com.firmino.neurossaude.alerts;
 
+import static android.content.Context.ALARM_SERVICE;
+
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,13 +17,11 @@ import com.firmino.neurossaude.R;
 import com.firmino.neurossaude.views.WeekViewCoinButton;
 
 import java.util.Calendar;
-import java.util.Locale;
 
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        System.out.println("Chegou aqui");
-        String text = "";
+        String text;
         int notifyType = context.getSharedPreferences("com.firmino.neurossaude", Context.MODE_PRIVATE).getInt("lastCoinUnlockType", -1);
         switch (notifyType) {
             case WeekViewCoinButton.COIN_TYPE_VIDEO:
@@ -30,6 +30,8 @@ public class AlarmReceiver extends BroadcastReceiver {
             case WeekViewCoinButton.COIN_TYPE_AUDIO:
                 text = "Prática semanal disponível.";
                 break;
+            default:
+                text = "Lembrete do Neurossaude.";
         }
 
         Intent startAppIntent = new Intent(context.getApplicationContext(), LoginActivity.class);
@@ -37,14 +39,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
         PendingIntent onClickIntent = PendingIntent.getActivity(context, 0, startAppIntent, flags);
 
-        int hour = context.getSharedPreferences("com.firmino.neurossaude", Context.MODE_PRIVATE).getInt("hour", 0);
-        int minutes = context.getSharedPreferences("com.firmino.neurossaude", Context.MODE_PRIVATE).getInt("minutes", 0);
-        String currentHour =  String.format(Locale.getDefault(), "%02dh:%02dmin", hour, minutes);
-
         NotificationCompat.Builder notification = new NotificationCompat.Builder(context, "neurosaude")
                 .setSmallIcon(R.drawable.ic_icon)
-                .setContentTitle("Lembrete" + currentHour)
-                .setContentInfo(currentHour)
+                .setContentTitle("Lembrete")
                 .setContentText(text)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
@@ -56,7 +53,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     public static void setAlarm(Context context) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         Intent notificationIntent = new Intent(context, AlarmReceiver.class);
         notificationIntent.setAction("android.media.action.DISPLAY_NOTIFICATION");
 
@@ -66,6 +63,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         alarmManager.cancel(broadcast);
 
         if (context.getSharedPreferences("com.firmino.neurossaude", Context.MODE_PRIVATE).getBoolean("reminderEnabled", false)) {
+            System.out.println("Foi ne");
             flags = PendingIntent.FLAG_UPDATE_CURRENT;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) flags = flags | PendingIntent.FLAG_IMMUTABLE;
             broadcast = PendingIntent.getBroadcast(context, 100, notificationIntent, flags);
@@ -80,4 +78,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, broadcast);
         }
     }
+
+
 }

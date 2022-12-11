@@ -2,6 +2,7 @@ package com.firmino.neurossaude;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,9 +16,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
+import com.firmino.neurossaude.alerts.MessageAlert;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -59,12 +62,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     public final static int MEDIA_TYPE_AUDIO = 1;
     public final static int MEDIA_TYPE_VIDEO = 2;
     public final static int MEDIA_TYPE_TEXT = 3;
+    private float mPlaybackSpeed = 1F;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
-
         String url = getIntent().getExtras().getString("url");
 
         if (url.endsWith(".mp3")) mediaType = MEDIA_TYPE_AUDIO;
@@ -85,19 +88,20 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.Player_ControlPlay).setOnClickListener(this);
         findViewById(R.id.Player_ControlBack).setOnClickListener(this);
-        findViewById(R.id.Player_ControlBack5).setOnClickListener(this);
-        findViewById(R.id.Player_ControlBack10).setOnClickListener(this);
+        findViewById(R.id.Player_Speed).setOnClickListener(this);
+        findViewById(R.id.Player_ControlForward30).setOnClickListener(this);
         findViewById(R.id.Player_ControlBack30).setOnClickListener(this);
         findViewById(R.id.Player_ControlStop).setOnClickListener(this);
         findViewById(R.id.Player_ControlFinish).setOnClickListener(this);
         findViewById(R.id.Player_VolumeUp).setOnClickListener(this);
         findViewById(R.id.Player_VolumeDown).setOnClickListener(this);
-
         findViewById(R.id.Text_ControlInit).setOnClickListener(this);
         findViewById(R.id.Text_ControlBack).setOnClickListener(this);
         findViewById(R.id.Text_ControlNext).setOnClickListener(this);
         findViewById(R.id.Text_ControlResetZoom).setOnClickListener(this);
         mPlayButton.setOnClickListener(view -> play());
+
+        setVolume(getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE).getInt("lastVolume",100));
 
         mProgressBar.setProgress(0);
         ((StyledPlayerView) findViewById(R.id.Player_VideoPlayer)).setPlayer(mPlayer);
@@ -112,7 +116,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             mTimeHandler.removeCallbacks(this);
             mTimeHandler.postDelayed(this, 100);
         }
-
     }
 
     @Override
@@ -131,14 +134,21 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onPause() {
+        mPlayer.pause();
         mTimeHandler.removeCallbacks(this);
         super.onPause();
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
         mTimeHandler.postDelayed(this, 100);
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        mPlayer.pause();
+        super.onStop();
     }
 
     @Override
@@ -168,8 +178,17 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         view.startAnimation(AnimationUtils.loadAnimation(this, R.anim.click_alpha));
         if (view.getId() == R.id.Player_PlayButtonIcon) play();
         else if (view.getId() == R.id.Player_ControlBack) back();
-        else if (view.getId() == R.id.Player_ControlBack5) back(5000);
-        else if (view.getId() == R.id.Player_ControlBack10) back(10000);
+        else if (view.getId() == R.id.Player_Speed) {
+            if (mediaType == MEDIA_TYPE_VIDEO) {
+                if (mPlaybackSpeed < 2) mPlaybackSpeed += 0.25;
+                else mPlaybackSpeed = 1;
+                mPlayer.setPlaybackSpeed(mPlaybackSpeed);
+                ((TextView) view).setText(String.format("Velo. %sx", mPlaybackSpeed));
+            } else {
+                MessageAlert.create(this, MessageAlert.TYPE_ALERT, "Não disponível neste tipo de mídia.");
+            }
+        }
+        else if (view.getId() == R.id.Player_ControlForward30) forward();
         else if (view.getId() == R.id.Player_ControlBack30) back(30000);
         else if (view.getId() == R.id.Player_ControlStop) stop();
         else if (view.getId() == R.id.Player_ControlPlay) play();
@@ -185,103 +204,116 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             mPDFViewer.fitToWidth(mPDFViewer.getCurrentPage());
     }
 
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setControlsVisible(false);
+        findViewById(R.id.Player_SpaceLayout).setVisibility(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE ? View.GONE:View.VISIBLE);
+        findViewById(R.id.Player_TitleLayout).setVisibility(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE ? View.GONE:View.VISIBLE);
+    }
+
     private void loadMedia(String uri) {
         FirebaseStorage.getInstance().getReferenceFromUrl(uri).getDownloadUrl().addOnCompleteListener(task -> {
-            Uri downloadLink = Uri.parse(task.getResult().toString());
-            if (mediaType == MEDIA_TYPE_TEXT) {
-                AsyncTask.execute(() -> {
-                    try {
-                        final InputStream input = new URL(task.getResult().toString()).openStream();
+            try {
+                Uri downloadLink = Uri.parse(task.getResult().toString());
+                if (mediaType == MEDIA_TYPE_TEXT) {
+                    AsyncTask.execute(() -> {
+                        try {
+                            final InputStream input = new URL(task.getResult().toString()).openStream();
 
-                        runOnUiThread(() -> {
-                            mPDFViewer.fromStream(input)
-                                    .enableDoubletap(true)
-                                    .defaultPage((int) lastPosition)
-                                    .enableSwipe(true)
-                                    .pageFitPolicy(FitPolicy.WIDTH)
-                                    .fitEachPage(true)
-                                    .autoSpacing(true)
-                                    .onPageChange((page, pageCount) -> {
-                                        mProgressBar.setMax(pageCount);
-                                        mProgressBar.setProgress(page + 1);
-                                        ((TextView) findViewById(R.id.Text_PageActual)).setText(String.valueOf(page + 1));
-                                        ((TextView) findViewById(R.id.Text_PageTotal)).setText(String.format(Locale.getDefault(), "/%d", pageCount));
-                                        lastPosition = page;
-                                    })
-                                    .load();
-                            mTextLayout.setVisibility(View.VISIBLE);
-                            mLoadingText.setVisibility(View.GONE);
-                            isLoaded = true;
-                            setControlsVisible(true);
-                        });
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-            } else {
-                mPlayer.setMediaItem(MediaItem.fromUri(downloadLink));
-                mPlayer.prepare();
-                mPlayer.addListener(new Player.Listener() {
-                    @Override
-                    public void onIsPlayingChanged(boolean isPlaying) {
-                        Player.Listener.super.onIsPlayingChanged(isPlaying);
-                        mPlayButton.setImageDrawable(ResourcesCompat.getDrawable(getResources(), isPlaying ? R.drawable.ic_audio_pause : R.drawable.ic_audio_play, null));
-                        ((TextView) findViewById(R.id.Player_ControlPlay)).setCompoundDrawablesWithIntrinsicBounds(0, isPlaying ? R.drawable.ic_audio_pause : R.drawable.ic_audio_play, 0, 0);
-                        ((TextView) findViewById(R.id.Player_ControlPlay)).setText(isPlaying ? R.string.pause : R.string.play);
-                        if (isPlaying) {
-                            new Handler().postDelayed(() -> findViewById(R.id.Player_PlayButtonBack1).startAnimation(AnimationUtils.loadAnimation(PlayActivity.this, R.anim.play_button_animation)), 50);
-                            new Handler().postDelayed(() -> findViewById(R.id.Player_PlayButtonBack2).startAnimation(AnimationUtils.loadAnimation(PlayActivity.this, R.anim.play_button_animation2)), 120);
-                        } else {
-                            findViewById(R.id.Player_PlayButtonBack1).clearAnimation();
-                            findViewById(R.id.Player_PlayButtonBack2).clearAnimation();
-                        }
-                    }
-
-                    @Override
-                    public void onRenderedFirstFrame() {
-                        Player.Listener.super.onRenderedFirstFrame();
-                        ValueAnimator anim = ValueAnimator.ofFloat(0f, 1f);
-                        anim.addUpdateListener(valueAnimator -> mVideoLayout.setAlpha((Float) valueAnimator.getAnimatedValue()));
-                        anim.setDuration(300);
-                        anim.start();
-                        isLoaded = true;
-                        setControlsVisible(true);
-                        mProgressBar.setProgress(0);
-                        mLoadingText.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onPlaybackStateChanged(int playbackState) {
-                        Player.Listener.super.onPlaybackStateChanged(playbackState);
-                        if (playbackState == Player.STATE_READY && !isLoaded) {
-                            mPlayer.seekTo(lastPosition);
-                            if (mediaType == MEDIA_TYPE_VIDEO) {
-                                mVideoLayout.setAlpha(0);
-                                mVideoLayout.setVisibility(View.VISIBLE);
-                            }
-                            if (mediaType == MEDIA_TYPE_AUDIO) {
-                                mAudioLayout.setVisibility(View.VISIBLE);
+                            runOnUiThread(() -> {
+                                mPDFViewer.fromStream(input)
+                                        .enableDoubletap(true)
+                                        .defaultPage((int) lastPosition)
+                                        .enableSwipe(true)
+                                        .pageFitPolicy(FitPolicy.WIDTH)
+                                        .fitEachPage(true)
+                                        .autoSpacing(true)
+                                        .onPageChange((page, pageCount) -> {
+                                            mProgressBar.setMax(pageCount);
+                                            mProgressBar.setProgress(page + 1);
+                                            ((TextView) findViewById(R.id.Text_PageActual)).setText(String.valueOf(page + 1));
+                                            ((TextView) findViewById(R.id.Text_PageTotal)).setText(String.format(Locale.getDefault(), "/%d", pageCount));
+                                            lastPosition = page;
+                                        })
+                                        .load();
+                                mTextLayout.setVisibility(View.VISIBLE);
+                                mLoadingText.setVisibility(View.GONE);
                                 isLoaded = true;
                                 setControlsVisible(true);
-                                mProgressBar.setProgress(0);
-                                mLoadingText.setVisibility(View.GONE);
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                } else {
+                    mPlayer.setMediaItem(MediaItem.fromUri(downloadLink));
+                    mPlayer.prepare();
+                    mPlayer.addListener(new Player.Listener() {
+                        @Override
+                        public void onIsPlayingChanged(boolean isPlaying) {
+                            Player.Listener.super.onIsPlayingChanged(isPlaying);
+                            mPlayButton.setImageDrawable(ResourcesCompat.getDrawable(getResources(), isPlaying ? R.drawable.ic_audio_pause : R.drawable.ic_audio_play, null));
+                            ((TextView) findViewById(R.id.Player_ControlPlay)).setCompoundDrawablesWithIntrinsicBounds(0, isPlaying ? R.drawable.ic_audio_pause : R.drawable.ic_audio_play, 0, 0);
+                            ((TextView) findViewById(R.id.Player_ControlPlay)).setText(isPlaying ? R.string.pause : R.string.play);
+                            if (isPlaying) {
+                                new Handler().postDelayed(() -> findViewById(R.id.Player_PlayButtonBack1).startAnimation(AnimationUtils.loadAnimation(PlayActivity.this, R.anim.play_button_animation)), 50);
+                                new Handler().postDelayed(() -> findViewById(R.id.Player_PlayButtonBack2).startAnimation(AnimationUtils.loadAnimation(PlayActivity.this, R.anim.play_button_animation2)), 120);
+                            } else {
+                                findViewById(R.id.Player_PlayButtonBack1).clearAnimation();
+                                findViewById(R.id.Player_PlayButtonBack2).clearAnimation();
                             }
                         }
 
-                        if (playbackState == Player.STATE_ENDED) {
-                            ((TextView) findViewById(R.id.Player_ControlPlay)).setText(R.string.play);
-                            findViewById(R.id.Player_PlayButtonBack1).clearAnimation();
-                            findViewById(R.id.Player_PlayButtonBack2).clearAnimation();
-                            mPlayButton.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_done, null));
-                            mPlayButton.setOnClickListener(view -> onBackPressed());
-                            setControlsVisible(false);
-                            isFinished = true;
-                            lastPosition = 0;
+                        @Override
+                        public void onRenderedFirstFrame() {
+                            Player.Listener.super.onRenderedFirstFrame();
+                            ValueAnimator anim = ValueAnimator.ofFloat(0f, 1f);
+                            anim.addUpdateListener(valueAnimator -> mVideoLayout.setAlpha((Float) valueAnimator.getAnimatedValue()));
+                            anim.setDuration(300);
+                            anim.start();
+                            isLoaded = true;
+                            setControlsVisible(true);
+                            mProgressBar.setProgress(0);
+                            mLoadingText.setVisibility(View.GONE);
                         }
-                        findViewById(R.id.Player_Buffering).setAlpha(playbackState == Player.STATE_BUFFERING ? 1f : 0.3f);
-                    }
-                });
-                updateTimers();
+
+                        @Override
+                        public void onPlaybackStateChanged(int playbackState) {
+                            Player.Listener.super.onPlaybackStateChanged(playbackState);
+                            if (playbackState == Player.STATE_READY && !isLoaded) {
+                                mPlayer.seekTo(lastPosition);
+                                if (mediaType == MEDIA_TYPE_VIDEO) {
+                                    mVideoLayout.setAlpha(0);
+                                    mVideoLayout.setVisibility(View.VISIBLE);
+                                }
+                                if (mediaType == MEDIA_TYPE_AUDIO) {
+                                    mAudioLayout.setVisibility(View.VISIBLE);
+                                    isLoaded = true;
+                                    setControlsVisible(true);
+                                    mProgressBar.setProgress(0);
+                                    mLoadingText.setVisibility(View.GONE);
+                                }
+                            }
+
+                            if (playbackState == Player.STATE_ENDED) {
+                                ((TextView) findViewById(R.id.Player_ControlPlay)).setText(R.string.play);
+                                findViewById(R.id.Player_PlayButtonBack1).clearAnimation();
+                                findViewById(R.id.Player_PlayButtonBack2).clearAnimation();
+                                mPlayButton.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_done, null));
+                                mPlayButton.setOnClickListener(view -> onBackPressed());
+                                setControlsVisible(false);
+                                isFinished = true;
+                                lastPosition = 0;
+                            }
+                            findViewById(R.id.Player_Buffering).setAlpha(playbackState == Player.STATE_BUFFERING ? 1f : 0.3f);
+                        }
+                    });
+                    updateTimers();
+                }
+            } catch (Exception ex) {
+                MessageAlert.create(this, MessageAlert.TYPE_ERRO, "Ocorreu um erro no carregamento da mídia. Tente novamente mais tarde.");
+                new Handler().postDelayed(this::onBackPressed, 2000);
             }
         });
     }
@@ -301,7 +333,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         ((TextView) findViewById(R.id.Player_ControlPlay)).setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_audio_play, 0, 0);
         findViewById(R.id.Player_PlayButtonBack1).clearAnimation();
         findViewById(R.id.Player_PlayButtonBack2).clearAnimation();
-
     }
 
     private void setVolume(int volume) {
@@ -312,12 +343,20 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             anim.addUpdateListener(valueAnimator -> findViewById(R.id.Player_Volume).setAlpha((Float) valueAnimator.getAnimatedValue()));
             anim.setDuration(300);
             anim.start();
+            getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE).edit().putInt("lastVolume", volume).apply();
+        }
+    }
+
+    private void forward() {
+        if(lastProgress >= 99) {
+            mPlayer.seekTo(mPlayer.getCurrentPosition() + (long) 30000);
+        } else{
+            MessageAlert.create(this,MessageAlert.TYPE_ALERT, "Você só pode avançar a mídia se já tiver assistido-a por completo previamente.");
         }
     }
 
     private void back(long millis) {
         mPlayer.seekTo(mPlayer.getCurrentPosition() - millis);
-
     }
 
     private void back() {

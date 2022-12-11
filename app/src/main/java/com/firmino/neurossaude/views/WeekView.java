@@ -103,7 +103,7 @@ public class WeekView extends FrameLayout {
             anim.start();
             mPercent.setVisibility(isVisible ? VISIBLE : GONE);
         } else {
-            MessageAlert.create(mContext, MessageAlert.TYPE_ALERT, "Semana bloqueada! Continue o curso para desbloqueà-la.");
+            MessageAlert.create(mContext, MessageAlert.TYPE_ALERT, getContext().getString(R.string.week_block));
         }
     }
 

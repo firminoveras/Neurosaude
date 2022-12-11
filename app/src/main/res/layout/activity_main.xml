@@ -8,6 +8,41 @@
     tools:context=".MainActivity"
     tools:ignore="ContentDescription">
 
+    <FrameLayout
+        android:id="@+id/Main_Ripple"
+        android:visibility="gone"
+        android:elevation="12dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha=".6"
+            android:src="@drawable/bg_circle"
+            app:tint="@color/color_background" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha=".6"
+            android:scaleX=".9"
+            android:scaleY=".9"
+            android:src="@drawable/bg_circle"
+            app:tint="@color/color_background" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="24dp"
+            android:scaleX=".8"
+            android:scaleY=".8"
+            android:src="@drawable/bg_circle"
+            app:tint="@color/color_background" />
+
+    </FrameLayout>
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/Main_AppBar"
         android:layout_width="match_parent"
@@ -57,7 +92,6 @@
     </FrameLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/Main_ScrollLayout_Weeks"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -186,6 +220,7 @@
 
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/Main_Button_Offline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="6dp"

@@ -5,6 +5,9 @@
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -41,15 +44,18 @@
 
         <activity
             android:name=".PlayActivity"
-            android:exported="false" />
-        <activity
+            android:exported="false"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:screenOrientation="portrait"
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/title_activity_main"
-            android:theme="@style/Theme.Neurosaude.NoActionBar" />
-        <activity
+            android:theme="@style/Theme.Neurosaude.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity android:screenOrientation="portrait"
             android:name=".LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

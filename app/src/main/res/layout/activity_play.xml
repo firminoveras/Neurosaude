@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_background"
+    android:keepScreenOn="true"
     tools:context=".PlayActivity"
     tools:ignore="ContentDescription,Overdraw">
 
@@ -52,6 +53,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/Player_TitleLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -191,6 +193,8 @@
         </FrameLayout>
 
         <Space
+
+            android:id="@+id/Player_SpaceLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
@@ -350,32 +354,32 @@
                 app:drawableTopCompat="@drawable/ic_back_30" />
 
             <TextView
-                android:id="@+id/Player_ControlBack10"
+                android:id="@+id/Player_ControlForward30"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="46dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/back10"
+                android:text="@string/forward_30"
                 android:textColor="@color/color_gray"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:drawableTint="@color/color_gray"
-                app:drawableTopCompat="@drawable/ic_back_10" />
+                app:drawableTopCompat="@drawable/ic_forward_30" />
 
             <TextView
-                android:id="@+id/Player_ControlBack5"
+                android:id="@+id/Player_Speed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/back5"
+                android:text="@string/velocityplay"
                 android:textColor="@color/color_gray"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:drawableTint="@color/color_gray"
-                app:drawableTopCompat="@drawable/ic_back_5" />
+                app:drawableTopCompat="@drawable/ic_speed" />
 
         </LinearLayout>
 

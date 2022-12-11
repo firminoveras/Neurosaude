@@ -1,5 +1,7 @@
 package com.firmino.neurossaude;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.app.NotificationChannel;
@@ -12,6 +14,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -22,7 +25,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.NestedScrollView;
 
 import com.firmino.neurossaude.alerts.AlarmReceiver;
 import com.firmino.neurossaude.alerts.MessageAlert;
@@ -71,14 +73,6 @@ public class MainActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.Main_Bar_UserName)).setText(User.username);
         findViewById(R.id.Main_Bar_Background).startAnimation(AnimationUtils.loadAnimation(this, R.anim.background_rotatoring_zoom));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("neurosaude", "Neurosaude Channel", importance);
-            channel.setDescription("Neurosaude Channel");
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-
         ViewGroup.LayoutParams lay = mMainAppBar.getLayoutParams();
         lay.height = getResources().getDisplayMetrics().heightPixels;
         mMainAppBar.setLayoutParams(lay);
@@ -94,22 +88,16 @@ public class MainActivity extends AppCompatActivity {
             mFabSettings.show();
         }), 3000);
 
-        ((NestedScrollView) findViewById(R.id.Main_ScrollLayout_Weeks)).setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (scrollY == 0) {
-                mFabSettings.show();
-            } else if (oldScrollY == 0) {
-                mFabSettings.hide();
-                setSettingsVisible(false);
-            }
-        });
-
         initMediaResultListener();
         initVideoActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> showAlarmDialog());
 
         findViewById(R.id.Main_Button_Alarm).setOnClickListener(view -> showAlarmDialog());
         findViewById(R.id.Main_Button_Exit).setOnClickListener(view -> showExitDialog());
+        findViewById(R.id.Main_Button_Offline).setOnClickListener(view -> showOfflineModeDialog());
         mFabSettings.setOnClickListener(view -> setSettingsVisible(!isSettingsVisible));
         findViewById(R.id.Main_Button_InitialVideo).setOnClickListener(view -> startInitVideo());
+
+
 
         update();
     }
@@ -188,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showAlarmDialog() {
         setSettingsVisible(false);
+        setFreeDistractionModeOn(true);
         SharedPreferences prefs = getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE);
         View alertContent = getLayoutInflater().inflate(R.layout.alarm_dialog_layout, findViewById(R.id.Alarm_Main));
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -204,7 +193,16 @@ public class MainActivity extends AppCompatActivity {
         alarmTimePicker.setCurrentHour(prefs.getInt("hour", alarmTimePicker.getCurrentHour()));
         alarmTimePicker.setCurrentMinute(prefs.getInt("minutes", alarmTimePicker.getCurrentMinute()));
 
-        alarmEnableSwitch.setOnCheckedChangeListener((compoundButton, b) -> alarmTimePicker.setVisibility(b ? View.VISIBLE : View.GONE));
+        alarmEnableSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            alarmTimePicker.setVisibility(b ? View.VISIBLE : View.GONE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                int importance = NotificationManager.IMPORTANCE_DEFAULT;
+                NotificationChannel channel = new NotificationChannel("Neurosaude", "Lembretes das Práticas", importance);
+                channel.setDescription("Canal de notificações para envio de lembretes para as práticas semanais.");
+                NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                notificationManager.createNotificationChannel(channel);
+            }
+        });
         alarmEnableSwitch.setChecked(prefs.getBoolean("reminderEnabled", false));
 
         alarmCloseButton.setOnClickListener(view -> {
@@ -219,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 MessageAlert.create(this, MessageAlert.TYPE_SUCESS, "Lembretes desabilitados.");
             }
+            setFreeDistractionModeOn(false);
             dialog.dismiss();
         });
 
@@ -227,13 +226,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void showExitDialog() {
         setSettingsVisible(false);
+        setFreeDistractionModeOn(true);
         View alertContent = getLayoutInflater().inflate(R.layout.exit_dialog_layout, findViewById(R.id.Exit_Main));
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setCancelable(false);
         alert.setView(alertContent);
         Dialog dialog = alert.show();
 
-        alertContent.findViewById(R.id.Exit_Cancel).setOnClickListener(v -> dialog.dismiss());
+        alertContent.findViewById(R.id.Exit_Cancel).setOnClickListener(v -> {
+            setFreeDistractionModeOn(false);
+            dialog.dismiss();
+        });
         alertContent.findViewById(R.id.Exit_Close).setOnClickListener(v -> finish());
         alertContent.findViewById(R.id.Exit_LogOut).setOnClickListener(v -> {
             getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE).edit().putBoolean("reminderEnabled", false).apply();
@@ -250,6 +253,125 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             });
         });
+    }
+
+    private void showOfflineModeDialog() {
+        setSettingsVisible(false);
+        MessageAlert.create(this,MessageAlert.TYPE_ALERT, "Essa funcionalidade ainda está em desenvolvimento.");
+        /*
+        setSettingsVisible(false);
+        SharedPreferences prefs = getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE);
+        View alertContent = getLayoutInflater().inflate(R.layout.offline_dialog_layout, findViewById(R.id.Offline_Main));
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setCancelable(false);
+        alert.setView(alertContent);
+        Dialog dialog = alert.show();
+
+        SwitchMaterial offlineModeSwitch = alertContent.findViewById(R.id.Offline_Enable);
+        ProgressBar offlineProgressBar = alertContent.findViewById(R.id.Offline_Progress);
+        FrameLayout offlineDownloadButton = alertContent.findViewById(R.id.Offline_Download);
+        TextView offlineExit = alertContent.findViewById(R.id.Offline_Close);
+
+        offlineDownloadButton.setOnClickListener(v -> {
+            offlineProgressBar.setIndeterminate(true);
+            prefs.edit().putBoolean("offlineAllDownloaded", false).apply();
+            offlineModeSwitch.setEnabled(false);
+            offlineExit.setEnabled(false);
+            offlineModeSwitch.setChecked(false);
+
+            List<StorageReference> downloadItems = new ArrayList<>();
+
+            StorageReference storage = FirebaseStorage.getInstance().getReference();
+            Task<ListResult> TaskText = storage.child("text").listAll()
+                    .addOnSuccessListener(listResult -> downloadItems.addAll(listResult.getItems()));
+            Task<ListResult> TaskAudio = storage.child("audio").listAll()
+                    .addOnSuccessListener(listResult -> downloadItems.addAll(listResult.getItems()));
+            Task<ListResult> TaskVideo = storage.child("video").listAll()
+                    .addOnSuccessListener(listResult -> downloadItems.addAll(listResult.getItems()));
+
+            Tasks.whenAll(TaskText, TaskAudio, TaskVideo)
+                    .addOnSuccessListener(unused -> {
+                        int total = downloadItems.size();
+                        AtomicInteger actual = new AtomicInteger();
+                        offlineProgressBar.setIndeterminate(false);
+                        offlineProgressBar.setMax(total);
+                        offlineProgressBar.setProgress(0);
+                        for (StorageReference item : downloadItems) {
+                            try {
+                                item.getFile(File.createTempFile(item.getName().split("\\.")[0], item.getName().split("\\.")[1]))
+                                        .addOnSuccessListener(taskSnapshot -> {
+                                            actual.getAndIncrement();
+                                            offlineProgressBar.setProgress(actual.get());
+                                            if (actual.get() == total) {
+                                                prefs.edit().putBoolean("offlineAllDownloaded", true).apply();
+                                                offlineModeSwitch.setEnabled(true);
+                                                v.setVisibility(View.GONE);
+                                                offlineExit.setEnabled(true);
+                                                MessageAlert.create(this, MessageAlert.TYPE_SUCESS, "Curso inteiramente carregado com sucesso.");
+                                            }
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            MessageAlert.create(this, MessageAlert.TYPE_ERRO, "Ocorreu um erro ao baixar um item.");
+                                            dialog.dismiss();
+                                        });
+                            } catch (IOException e) {
+                                MessageAlert.create(this, MessageAlert.TYPE_ERRO, "Ocorreu um erro ao baixar os itens");
+                                dialog.dismiss();
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        e.printStackTrace();
+                        MessageAlert.create(this, MessageAlert.TYPE_ERRO, "Ocorreu um erro ao listar ítens");
+                        dialog.dismiss();
+                    });
+        });
+
+        offlineExit.setOnClickListener(v -> {
+            prefs.edit().putBoolean("offlineMode",offlineModeSwitch.isChecked()).apply();
+            if(!offlineModeSwitch.isChecked()){
+
+                WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+                wifi.setWifiEnabled(false);
+
+            }
+        });
+
+    */
+    }
+
+    private void setFreeDistractionModeOn(boolean active) {
+        FrameLayout ripple = findViewById(R.id.Main_Ripple);
+        if(active) {
+            ripple.setVisibility(View.VISIBLE);
+            int maxSize = getResources().getDisplayMetrics().heightPixels * 2;
+            ValueAnimator anim = ValueAnimator.ofInt(0, maxSize);
+            anim.addUpdateListener(animation -> {
+                ViewGroup.LayoutParams params = ripple.getLayoutParams();
+                params.height = (int) animation.getAnimatedValue();
+                params.width = (int) animation.getAnimatedValue();
+                ripple.setLayoutParams(params);
+            });
+            anim.setDuration(1000);
+            anim.start();
+        }else {
+            ValueAnimator anim = ValueAnimator.ofInt(ripple.getLayoutParams().height, 0);
+            anim.addUpdateListener(animation -> {
+                ViewGroup.LayoutParams params = ripple.getLayoutParams();
+                params.height = (int) animation.getAnimatedValue();
+                params.width = (int) animation.getAnimatedValue();
+                ripple.setLayoutParams(params);
+            });
+            anim.setDuration(500);
+            anim.start();
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    ripple.setVisibility(View.GONE);
+                    super.onAnimationEnd(animation);
+                }
+            });
+        }
     }
 
     private void update() {
