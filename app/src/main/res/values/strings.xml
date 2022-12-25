@@ -9,19 +9,9 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="open_controls">abra os controles arrastando para cima</string>
     <string name="loading">Carregando…</string>
-    <string name="restart">Recomeçar</string>
-    <string name="back30">Voltar 30s</string>
-    <string name="stop">Parar</string>
     <string name="play">Continuar</string>
-    <string name="volup">+ Volume</string>
-    <string name="voldown">- Volume</string>
-    <string name="back">Voltar</string>
     <string name="pause">Pausar</string>
     <string name="saving">Salvando…</string>
-    <string name="init">Início</string>
-    <string name="voltar">Voltar</string>
-    <string name="avan_ar">Avançar</string>
-    <string name="resetzoom">Restaurar</string>
     <string name="progress">Progresso</string>
     <string name="alarm_title">Notificações de Lembretes de Práticas</string>
     <string name="alarm_subtitle">Estudos apontam que a melhor forma de criar um hábito é definir um horário fixo, de preferência antes ou após momentos chaves do seu dia (ao acordar, refeições, dormir, etc.), pensando nisso, para te ajudar a a extrair o máximo desse curso gostaríamos que você escolhesse um horário para que o aplicativo envie notificações lembrando-o(a) de realizar sua prática diária.</string>
@@ -38,7 +28,8 @@
     <string name="exit_app">Sair do Aplicativo</string>
     <string name="logout">Sair da Conta</string>
     <string name="back_pressed">Todas as suas interações foram salvas na sua conta atual. Você deseja sair do aplicativo?</string>
-    <string name="velocityplay">Veloc. 1.0x</string>
-    <string name="forward_30">Avançar 30s</string>
     <string name="week_block">Semana bloqueada! Continue o curso para desbloqueá-la.</string>
+    <string name="loading_text">Carregando Texto…</string>
+    <string name="loading_video">Carregando vídeo…</string>
+    <string name="loading_audio">Carregando áudio…</string>
 </resources>

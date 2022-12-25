@@ -12,8 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.firmino.neurossaude.PlayActivity;
+import com.firmino.neurossaude.AudioMediaActivity;
 import com.firmino.neurossaude.R;
+import com.firmino.neurossaude.TextMediaActivity;
+import com.firmino.neurossaude.VideoMediaActivity;
 import com.firmino.neurossaude.alerts.MessageAlert;
 import com.firmino.neurossaude.user.User;
 
@@ -137,7 +139,7 @@ public class WeekView extends FrameLayout {
     }
 
     private void coinVideoClicked(int progress, int value) {
-        Intent intent = new Intent(mContext, PlayActivity.class);
+        Intent intent = new Intent(mContext, VideoMediaActivity.class);
         intent.putExtra("maintitle", "Semana " + week);
         intent.putExtra("value", value);
         intent.putExtra("progress", progress);
@@ -149,19 +151,19 @@ public class WeekView extends FrameLayout {
     }
 
     private void coinTextClicked(int progress, int value) {
-        Intent intent = new Intent(mContext, PlayActivity.class);
+        Intent intent = new Intent(mContext, TextMediaActivity.class);
         intent.putExtra("maintitle", "Semana " + week);
         intent.putExtra("value", value);
         intent.putExtra("progress", progress);
         intent.putExtra("title", textTitle);
         intent.putExtra("week", week);
         intent.putExtra("text", textText);
-        intent.putExtra("url", "gs://neurosaude-firmino.appspot.com/text/text_week" + week + ".pdf");
+        intent.putExtra("url", "gs://neurosaude-firmino.appspot.com/text/text_week" + week + ".md");
         buttonsVisibleChangeListener.onCoinClickedListener(intent);
     }
 
     private void coinAudioClicked(int progress, int value, int audioIndex) {
-        Intent intent = new Intent(mContext, PlayActivity.class);
+        Intent intent = new Intent(mContext, AudioMediaActivity.class);
         intent.putExtra("maintitle", "Semana " + week);
         intent.putExtra("value", value);
         intent.putExtra("progress", progress);

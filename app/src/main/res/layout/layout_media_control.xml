@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="240dp">
+
+    <TextView
+        android:id="@+id/MediaControl_Label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:alpha=".3"
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="@string/open_controls"
+        android:textStyle="bold"
+        app:drawableEndCompat="@drawable/ic_up"
+        app:drawableStartCompat="@drawable/ic_up"
+        tools:ignore="TextContrastCheck" />
+
+    <LinearLayout
+        android:id="@+id/MediaControl_DetailsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:alpha="0"
+        android:gravity="center"
+        android:orientation="horizontal" />
+
+    <ProgressBar
+        android:id="@+id/MediaControl_ProgressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_gravity="top"
+        android:indeterminate="false"
+        android:max="1000"
+        android:progress="0"
+        android:progressDrawable="@drawable/bg_custom_seekbar"
+        android:translationY="@dimen/audio_controllayouttop" />
+
+    <LinearLayout
+        android:id="@+id/MediaControl_ControlLayoutTop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:background="@drawable/ic_bg_layout_thic"
+        android:backgroundTint="#30FFFFFF"
+        android:orientation="horizontal"
+        android:translationY="@dimen/audio_controllayouttop">
+
+        <TextView
+            android:id="@+id/MediaControl_Control1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/color_gray"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:drawableTint="@color/color_gray" />
+
+        <TextView
+            android:id="@+id/MediaControl_Control2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="42dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/color_gray"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:drawableTint="@color/color_gray" />
+
+        <TextView
+            android:id="@+id/MediaControl_Control3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="42dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/color_gray"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:drawableTint="@color/color_gray" />
+
+        <TextView
+            android:id="@+id/MediaControl_Control4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/color_gray"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:drawableTint="@color/color_gray" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/MediaControl_ControlLayoutMiddle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/ic_bg_layout_thic"
+        android:backgroundTint="#20FFFFFF"
+        android:orientation="horizontal"
+        android:translationY="@dimen/audio_controllayoutmiddle">
+
+        <TextView
+            android:id="@+id/MediaControl_Control5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/color_gray"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:drawableTint="@color/color_gray" />
+
+        <TextView
+            android:id="@+id/MediaControl_Control6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="42dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/color_gray"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:drawableTint="@color/color_gray" />
+
+        <TextView
+            android:id="@+id/MediaControl_Control7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="42dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/color_gray"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:drawableTint="@color/color_gray" />
+
+        <TextView
+            android:id="@+id/MediaControl_Control8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/color_gray"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:drawableTint="@color/color_gray" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/MediaControl_ControlLayoutBottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="170dp"
+        android:background="@drawable/ic_bg_layout_thic"
+        android:backgroundTint="#20FFFFFF"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:translationY="@dimen/audio_controllayoutbottom">
+
+        <TextView
+            android:id="@+id/MediaControl_Control9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:gravity="center_horizontal|bottom"
+            android:textColor="@color/color_gray"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:drawableTint="@color/color_gray" />
+
+    </LinearLayout>
+
+</FrameLayout>

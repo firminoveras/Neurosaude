@@ -11,4 +11,27 @@
         </attr>
 
     </declare-styleable>
+    <declare-styleable name="MediaControl">
+
+        <attr name="control1_text" format="string" />
+        <attr name="control2_text" format="string" />
+        <attr name="control3_text" format="string" />
+        <attr name="control4_text" format="string" />
+        <attr name="control5_text" format="string" />
+        <attr name="control6_text" format="string" />
+        <attr name="control7_text" format="string" />
+        <attr name="control8_text" format="string" />
+        <attr name="control9_text" format="string" />
+
+        <attr name="control1_drawable" format="reference" />
+        <attr name="control2_drawable" format="reference" />
+        <attr name="control3_drawable" format="reference" />
+        <attr name="control4_drawable" format="reference" />
+        <attr name="control5_drawable" format="reference" />
+        <attr name="control6_drawable" format="reference" />
+        <attr name="control7_drawable" format="reference" />
+        <attr name="control8_drawable" format="reference" />
+        <attr name="control9_drawable" format="reference" />
+
+    </declare-styleable>
 </resources>

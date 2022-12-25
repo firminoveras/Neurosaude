@@ -28,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.firmino.neurossaude.alerts.AlarmReceiver;
 import com.firmino.neurossaude.alerts.MessageAlert;
+import com.firmino.neurossaude.mediaactivity.MediaActivity;
 import com.firmino.neurossaude.user.User;
 import com.firmino.neurossaude.views.WeekView;
 import com.firmino.neurossaude.views.WeekViewCoinButton;
@@ -122,16 +123,16 @@ public class MainActivity extends AppCompatActivity {
                 int progressResult = result.getData().getIntExtra("progress", -1);
                 int week = result.getData().getIntExtra("week", -1);
                 int audioIndex = result.getData().getIntExtra("audioIndex", -1);
-                long positionResult = result.getData().getLongExtra("position", -1);
+                long positionResult = result.getData().getLongExtra("value", -1);
                 long millisOnMedia = result.getData().getLongExtra("millisOnMedia", -1);
                 switch (result.getData().getIntExtra("mediaType", -1)) {
-                    case PlayActivity.MEDIA_TYPE_TEXT:
+                    case MediaActivity.MEDIA_TYPE_TEXT:
                         User.setTextValues(week, progressResult, positionResult, millisOnMedia, this::update);
                         break;
-                    case PlayActivity.MEDIA_TYPE_VIDEO:
+                    case MediaActivity.MEDIA_TYPE_VIDEO:
                         User.setVideoValues(week, progressResult, positionResult, millisOnMedia, this::update);
                         break;
-                    case PlayActivity.MEDIA_TYPE_AUDIO:
+                    case MediaActivity.MEDIA_TYPE_AUDIO:
                         User.setAudioValues(week, audioIndex, progressResult, millisOnMedia, positionResult, this::update);
                         break;
                 }
@@ -166,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startInitVideo() {
-        Intent intent = new Intent(this, PlayActivity.class);
+        Intent intent = new Intent(this, VideoMediaActivity.class);
         intent.putExtra("maintitle", "Introdução do Curso");
         intent.putExtra("title", "Olá, tudo bem com você?");
         intent.putExtra("text", getString(R.string.initvideo));

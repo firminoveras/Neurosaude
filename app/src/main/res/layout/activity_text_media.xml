@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_background"
+    android:keepScreenOn="true"
+    tools:context=".TextMediaActivity"
+    tools:ignore="ContentDescription,Overdraw">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha=".05"
+        android:rotation="15"
+        android:scaleType="fitStart"
+        android:src="@drawable/ic_icon_launcher"
+        android:translationX="-60dp"
+        app:tint="@color/color_black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/Text_TitleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/Text_Week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha=".8"
+                android:fontFamily="@font/comfortaa"
+                android:gravity="center"
+                android:textColor="@color/color_gray"
+                android:textSize="32sp" />
+
+            <TextView
+                android:id="@+id/Text_Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha=".8"
+                android:fontFamily="@font/comfortaa"
+                android:gravity="center"
+                android:textColor="@color/color_gray"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/Text_Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha=".6"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:textColor="@color/color_gray"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3">
+
+            <TextView
+                android:id="@+id/Text_TextViewer"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:background="#25000000"
+                android:fontFamily="@font/comfortaa"
+                android:padding="16dp"
+                android:scrollbars="vertical"
+                android:textColor="@color/color_white" />
+
+            <TextView
+                android:id="@+id/Text_LoadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:alpha=".5"
+                android:fontFamily="@font/comfortaa"
+                android:gravity="center"
+                android:text="@string/loading_text"
+                android:textColor="@color/color_white"
+                android:textStyle="bold"
+                app:drawableTopCompat="@drawable/ic_download" />
+        </FrameLayout>
+
+       <Space
+           android:id="@+id/Text_SpaceLayout"
+           android:layout_width="match_parent"
+           android:layout_height="240dp"/>
+
+    </LinearLayout>
+
+    <com.firmino.neurossaude.views.MediaControl
+        android:id="@+id/Text_MediaControl"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_gravity="bottom"
+        app:control1_drawable="@drawable/ic_backpage"
+        app:control1_text="Voltar"
+        app:control4_drawable="@drawable/ic_nextpage"
+        app:control4_text="Avançar"
+        app:control5_drawable="@drawable/ic_zoomreset"
+        app:control5_text="Restaurar"
+        app:control6_drawable="@drawable/ic_zoom_out"
+        app:control6_text="Diminuir"
+        app:control7_drawable="@drawable/ic_zoom_in"
+        app:control7_text="Aumentar"
+        app:control8_drawable="@drawable/ic_contrast"
+        app:control8_text="Constraste"
+        app:control9_drawable="@drawable/ic_back"
+        app:control9_text="Voltar">
+
+        <TextView
+            android:id="@+id/Text_PageActual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:textColor="@color/color_gray"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_page"
+            app:drawableTint="@color/color_gray" />
+
+        <TextView
+            android:id="@+id/Text_PageTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha=".3"
+            android:drawablePadding="6dp"
+            android:gravity="center"
+            android:textColor="@color/color_gray"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:drawableTint="@color/color_gray" />
+
+    </com.firmino.neurossaude.views.MediaControl>
+
+
+
+</FrameLayout>

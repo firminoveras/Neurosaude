@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_background"
+    android:keepScreenOn="true"
+    tools:context=".AudioMediaActivity"
+    tools:ignore="ContentDescription,Overdraw">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha=".05"
+        android:rotation="15"
+        android:scaleType="fitStart"
+        android:src="@drawable/ic_icon_launcher"
+        android:translationX="-60dp"
+        app:tint="@color/color_black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/Audio_TitleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/Audio_Week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha=".8"
+                android:fontFamily="@font/comfortaa"
+                android:gravity="center"
+                android:textColor="@color/color_gray"
+                android:textSize="32sp" />
+
+            <TextView
+                android:id="@+id/Audio_Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha=".8"
+                android:fontFamily="@font/comfortaa"
+                android:gravity="center"
+                android:textColor="@color/color_gray"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/Audio_Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha=".6"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:textColor="@color/color_gray"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3">
+
+            <FrameLayout
+                android:id="@+id/Audio_AudioPlayerLayout"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:visibility="gone">
+
+                <com.google.android.exoplayer2.ui.StyledPlayerView
+                    android:id="@+id/Audio_Player"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:resize_mode="fixed_width"
+                    android:visibility="gone"
+                    app:use_controller="false" />
+
+                <ImageView
+                    android:id="@+id/Audio_PlayButtonBack2"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_gravity="center"
+                    android:alpha=".3"
+                    android:background="@drawable/bg_circle"
+                    android:backgroundTint="@color/color_background2" />
+
+                <ImageView
+                    android:id="@+id/Audio_PlayButtonBack1"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_gravity="center"
+                    android:alpha=".3"
+                    android:background="@drawable/bg_circle"
+                    android:backgroundTint="@color/color_background2" />
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_circle_ripple"
+                    android:clickable="true"
+                    android:elevation="4dp"
+                    android:focusable="true"
+                    android:padding="18dp"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <ImageView
+                    android:id="@+id/Audio_PlayButtonIcon"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/color_white"
+                    android:elevation="4dp"
+                    android:padding="20dp"
+                    android:src="@drawable/ic_audio_play"
+                    app:tint="@color/ic_launcher_background" />
+            </FrameLayout>
+
+
+            <TextView
+                android:id="@+id/Audio_LoadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:alpha=".5"
+                android:fontFamily="@font/comfortaa"
+                android:gravity="center"
+                android:text="@string/loading_audio"
+                android:textColor="@color/color_white"
+                android:textStyle="bold"
+                app:drawableTopCompat="@drawable/ic_download" />
+        </FrameLayout>
+
+        <Space
+            android:id="@+id/Audio_SpaceLayout"
+            android:layout_width="match_parent"
+            android:layout_height="240dp" />
+
+    </LinearLayout>
+
+    <com.firmino.neurossaude.views.MediaControl
+        android:id="@+id/Audio_MediaControl"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_gravity="bottom"
+        app:control1_drawable="@drawable/ic_audio_repeat"
+        app:control1_text="Recomeçar"
+        app:control2_drawable="@drawable/ic_back_30"
+        app:control2_text="Voltar 30s"
+        app:control3_drawable="@drawable/ic_forward_30"
+        app:control3_text="Avançar 30s"
+        app:control4_drawable="@drawable/ic_speed"
+        app:control4_text="Veloc. 1.0x"
+        app:control5_drawable="@drawable/ic_audio_stop"
+        app:control5_text="Parar"
+        app:control6_drawable="@drawable/ic_audio_play"
+        app:control6_text="Continuar"
+        app:control7_drawable="@drawable/ic_audio_volume_down"
+        app:control7_text="- Volume"
+        app:control8_drawable="@drawable/ic_audio_volume_up"
+        app:control8_text="+ Volume"
+        app:control9_drawable="@drawable/ic_back"
+        app:control9_text="Voltar">
+
+        <TextView
+            android:id="@+id/Audio_Buffering"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha=".3"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:textColor="@color/color_gray"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_download"
+            app:drawableTint="@color/color_gray" />
+
+        <TextView
+            android:id="@+id/Audio_TimerActual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:textColor="@color/color_gray"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_time"
+            app:drawableTint="@color/color_gray" />
+
+        <TextView
+            android:id="@+id/Audio_TimerTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha=".3"
+            android:drawablePadding="6dp"
+            android:gravity="center"
+            android:textColor="@color/color_gray"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:drawableTint="@color/color_gray" />
+
+        <TextView
+            android:id="@+id/Audio_Volume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:alpha=".3"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:textColor="@color/color_gray"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_audio_volume_up"
+            app:drawableTint="@color/color_gray" />
+    </com.firmino.neurossaude.views.MediaControl>
+
+</FrameLayout>

@@ -10,8 +10,8 @@ android {
         applicationId "com.firmino.neurossaude"
         minSdk 21
         targetSdk 33
-        versionCode 3
-        versionName "0.2.3"
+        versionCode 4
+        versionName "0.3"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
@@ -44,8 +44,8 @@ dependencies {
     // Firebase Storage
     implementation 'com.google.firebase:firebase-storage'
 
-    // PDF Viewer
-    implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1'
+    // Markdown Viewer
+    implementation 'io.noties.markwon:core:4.6.2'
 
     // ExoPlayer
     implementation 'com.google.android.exoplayer:exoplayer:2.18.2'
