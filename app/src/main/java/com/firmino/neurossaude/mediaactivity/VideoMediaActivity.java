@@ -1,4 +1,4 @@
-package com.firmino.neurossaude;
+package com.firmino.neurossaude.mediaactivity;
 
 import android.animation.ValueAnimator;
 import android.content.res.Configuration;
@@ -8,8 +8,8 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
+import com.firmino.neurossaude.R;
 import com.firmino.neurossaude.alerts.MessageAlert;
-import com.firmino.neurossaude.mediaactivity.MediaActivity;
 import com.firmino.neurossaude.views.MediaControl;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
@@ -25,6 +25,9 @@ public class VideoMediaActivity extends MediaActivity {
     private ExoPlayer mPlayer;
     private int volume = 100;
     private float mPlaybackSpeed = 1F;
+
+    // TODO: Mudaro continuar para iniciar no Media Control
+    // TODO: Cortar o primeiro vídeo para no final para 24:47 e reupar no Cloud
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +70,7 @@ public class VideoMediaActivity extends MediaActivity {
                 if (mPlaybackSpeed < 2) mPlaybackSpeed += 0.25;
                 else mPlaybackSpeed = 1;
                 mPlayer.setPlaybackSpeed(mPlaybackSpeed);
-                ((TextView) view).setText(String.format("Velo. %sx", mPlaybackSpeed));
+                view.setText(String.format("Velo. %sx", mPlaybackSpeed));
             }
 
             @Override
@@ -131,10 +134,10 @@ public class VideoMediaActivity extends MediaActivity {
                     anim.addUpdateListener(valueAnimator -> findViewById(R.id.Video_Player_Layout).setAlpha((Float) valueAnimator.getAnimatedValue()));
                     anim.setDuration(300);
                     anim.start();
-                    isLoaded = true;
                     mMediaControl.setProgress(0);
-                    setControlsVisibleComplete(true);
                     findViewById(R.id.Video_LoadingText).setVisibility(View.GONE);
+                    isLoaded = true;
+                    setControlsVisibleComplete(true);
                 }
 
                 @Override
@@ -148,7 +151,6 @@ public class VideoMediaActivity extends MediaActivity {
 
                     if (playbackState == Player.STATE_ENDED) {
                         mMediaControl.getButton(5).setText(R.string.play);
-                        setControlsVisibleComplete(false);
                         isFinished = true;
                         extraLastPosition = 0;
                     }
@@ -162,6 +164,7 @@ public class VideoMediaActivity extends MediaActivity {
     private void play() {
         if (mPlayer.isPlaying()) {
             mPlayer.pause();
+            save();
         } else {
             mPlayer.play();
         }
@@ -220,7 +223,10 @@ public class VideoMediaActivity extends MediaActivity {
 
     @Override
     public void setControlsVisibleComplete(boolean visible) {
-        mMediaControl.setControlsVisible(visible);
+        if (isControlsVisibles != visible && isLoaded) {
+            isControlsVisibles = visible;
+            mMediaControl.setControlsVisible(visible);
+        }
     }
 
     @Override

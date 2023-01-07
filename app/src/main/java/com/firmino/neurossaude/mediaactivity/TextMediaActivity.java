@@ -1,4 +1,4 @@
-package com.firmino.neurossaude;
+package com.firmino.neurossaude.mediaactivity;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -8,7 +8,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
-import com.firmino.neurossaude.mediaactivity.MediaActivity;
+import com.firmino.neurossaude.R;
 import com.firmino.neurossaude.views.MediaControl;
 
 import java.io.BufferedReader;
@@ -29,6 +29,8 @@ public class TextMediaActivity extends MediaActivity {
     private boolean isHighContrast = false;
     private int textSizeSp = 14;
 
+    // TODO: removert apresentação do tutor na primeira página do primeiro documento de texto da primeira semana
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +43,7 @@ public class TextMediaActivity extends MediaActivity {
         ((TextView) findViewById(R.id.Text_Title)).setText(extraSubtitle);
         ((TextView) findViewById(R.id.Text_Description)).setText(extraDesciption);
 
-        textSizeSp = getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE).getInt("textSizeSp",14);
+        textSizeSp = getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE).getInt("textSizeSp", 14);
         mTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp);
 
         mMediaControl.setOnClickMediaControlButton(new MediaControl.OnClickMediaControlButton() {
@@ -69,7 +71,7 @@ public class TextMediaActivity extends MediaActivity {
             public void onMediaControl5Clicked(TextView view) {
                 textSizeSp = 14;
                 mTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp);
-                getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE).edit().putInt("textSizeSp",textSizeSp).apply();
+                getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE).edit().putInt("textSizeSp", textSizeSp).apply();
             }
 
             @Override
@@ -77,7 +79,7 @@ public class TextMediaActivity extends MediaActivity {
                 if (textSizeSp > 8) {
                     textSizeSp -= 1;
                     mTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp);
-                    getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE).edit().putInt("textSizeSp",textSizeSp).apply();
+                    getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE).edit().putInt("textSizeSp", textSizeSp).apply();
                 }
             }
 
@@ -86,7 +88,7 @@ public class TextMediaActivity extends MediaActivity {
                 if (textSizeSp < 32) {
                     textSizeSp += 1;
                     mTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp);
-                    getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE).edit().putInt("textSizeSp",textSizeSp).apply();
+                    getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE).edit().putInt("textSizeSp", textSizeSp).apply();
                 }
             }
 
@@ -127,9 +129,10 @@ public class TextMediaActivity extends MediaActivity {
                 mText = Markwon.create(this);
                 mText.setMarkdown(findViewById(R.id.Text_TextViewer), textParts[0]);
                 mTextView.setVisibility(View.VISIBLE);
-                ((TextView) findViewById(R.id.Text_LoadingText)).setVisibility(View.GONE);
-                isLoaded = true;
+                findViewById(R.id.Text_LoadingText).setVisibility(View.GONE);
                 setTextPage((int) extraLastPosition);
+                isLoaded = true;
+                mMediaControl.setControlsVisible(true);
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -148,7 +151,6 @@ public class TextMediaActivity extends MediaActivity {
 
     @Override
     public void setControlsVisibleComplete(boolean visible) {
-        mMediaControl.setControlsVisible(visible);
     }
 
     @Override

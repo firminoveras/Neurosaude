@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_background"
     android:keepScreenOn="true"
-    tools:context=".AudioMediaActivity"
+    tools:context=".mediaactivity.AudioMediaActivity"
     tools:ignore="ContentDescription,Overdraw">
 
     <ImageView
@@ -154,12 +154,12 @@
         android:layout_gravity="bottom"
         app:control1_drawable="@drawable/ic_audio_repeat"
         app:control1_text="Recomeçar"
-        app:control2_drawable="@drawable/ic_back_30"
-        app:control2_text="Voltar 30s"
-        app:control3_drawable="@drawable/ic_forward_30"
-        app:control3_text="Avançar 30s"
-        app:control4_drawable="@drawable/ic_speed"
-        app:control4_text="Veloc. 1.0x"
+        app:control2_drawable="@drawable/ic_back_10"
+        app:control2_text="Voltar 10s"
+        app:control3_drawable="@drawable/ic_back_30"
+        app:control3_text="Voltar 30s"
+        app:control4_drawable="@drawable/ic_forward_10"
+        app:control4_text="Avançar 10s"
         app:control5_drawable="@drawable/ic_audio_stop"
         app:control5_text="Parar"
         app:control6_drawable="@drawable/ic_audio_play"

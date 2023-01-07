@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_background"
     android:keepScreenOn="true"
-    tools:context=".VideoMediaActivity"
+    tools:context=".mediaactivity.VideoMediaActivity"
     tools:ignore="ContentDescription,Overdraw">
 
     <ImageView

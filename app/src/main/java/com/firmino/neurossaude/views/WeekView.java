@@ -12,12 +12,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.firmino.neurossaude.AudioMediaActivity;
+import com.firmino.neurossaude.mediaactivity.AudioMediaActivity;
 import com.firmino.neurossaude.R;
-import com.firmino.neurossaude.TextMediaActivity;
-import com.firmino.neurossaude.VideoMediaActivity;
+import com.firmino.neurossaude.mediaactivity.TextMediaActivity;
+import com.firmino.neurossaude.mediaactivity.VideoMediaActivity;
 import com.firmino.neurossaude.alerts.MessageAlert;
 import com.firmino.neurossaude.user.User;
+import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -177,7 +178,7 @@ public class WeekView extends FrameLayout {
 
     public WeekViewCoinButton getLastUnlockedCoin() {
         if (isUnlocked) {
-            for (WeekViewCoinButton coin : mCoins) {
+            for (WeekViewCoinButton coin : Lists.reverse(mCoins)) {
                 if (coin.isUnlocked()) return coin;
             }
         }

@@ -10,8 +10,8 @@ android {
         applicationId "com.firmino.neurossaude"
         minSdk 21
         targetSdk 33
-        versionCode 4
-        versionName "0.3"
+        versionCode 5
+        versionName "0.4"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
@@ -47,6 +47,9 @@ dependencies {
     // Markdown Viewer
     implementation 'io.noties.markwon:core:4.6.2'
 
+    // Excel file creator
+    implementation group: 'net.sourceforge.jexcelapi', name: 'jxl', version: '2.6'
+
     // ExoPlayer
     implementation 'com.google.android.exoplayer:exoplayer:2.18.2'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.18.2'
@@ -59,6 +62,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }

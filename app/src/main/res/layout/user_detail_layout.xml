@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    android:background="@drawable/bg_detail_ripple"
+    android:clickable="true"
+    android:elevation="4dp"
+    android:id="@+id/Details_Main"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:padding="6dp"
+    tools:ignore="ContentDescription">
+
+    <CheckBox
+        android:id="@+id/Details_Checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/color_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/Details_Image_Layout"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        app:cardCornerRadius="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Details_Checkbox"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/Details_Image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Details_Image_Layout"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/Details_Username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/comfortaa"
+            android:lines="1"
+            android:maxLength="32"
+            android:textColor="@color/color_background_darker"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/Details_Email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/comfortaa"
+            android:lines="1"
+            android:maxLength="32"
+            android:textColor="@color/color_background_darker"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/Details_Progress_Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/comfortaa"
+        android:lines="1"
+        android:maxLength="32"
+        android:textColor="@color/color_background_darker"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/Details_Progress_Bar"
+        app:layout_constraintStart_toStartOf="@+id/Details_Progress_Bar"
+        app:layout_constraintTop_toBottomOf="@+id/Details_Progress_Bar" />
+
+    <ProgressBar
+        android:id="@+id/Details_Progress_Bar"
+        style="@android:style/Widget.Holo.ProgressBar.Horizontal"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="0"
+        android:progressTint="@color/color_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

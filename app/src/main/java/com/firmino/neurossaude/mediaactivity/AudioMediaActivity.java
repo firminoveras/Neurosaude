@@ -1,4 +1,4 @@
-package com.firmino.neurossaude;
+package com.firmino.neurossaude.mediaactivity;
 
 import android.animation.ValueAnimator;
 import android.content.res.Configuration;
@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import androidx.core.content.res.ResourcesCompat;
 
+import com.firmino.neurossaude.R;
 import com.firmino.neurossaude.alerts.MessageAlert;
-import com.firmino.neurossaude.mediaactivity.MediaActivity;
 import com.firmino.neurossaude.views.MediaControl;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
@@ -28,7 +28,8 @@ public class AudioMediaActivity extends MediaActivity {
     private MediaControl mMediaControl;
     private ExoPlayer mPlayer;
     private int volume = 100;
-    private float mPlaybackSpeed = 1F;
+
+    // TODO: Mudaro continuar para iniciar no Media Control
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,24 +56,20 @@ public class AudioMediaActivity extends MediaActivity {
 
             @Override
             public void onMediaControl2Clicked(TextView view) {
-                mPlayer.seekTo(mPlayer.getCurrentPosition() - 30000);
+                mPlayer.seekTo(mPlayer.getCurrentPosition() - 10000);
             }
 
             @Override
             public void onMediaControl3Clicked(TextView view) {
-                if (extraLastProgress >= 99)
-                    mPlayer.seekTo(mPlayer.getCurrentPosition() + (long) 30000);
-                else
-                    MessageAlert.create(AudioMediaActivity.this, MessageAlert.TYPE_ALERT, "Você só pode avançar a mídia se já tiver assistido-a por completo previamente.");
-
+                mPlayer.seekTo(mPlayer.getCurrentPosition() - 30000);
             }
 
             @Override
             public void onMediaControl4Clicked(TextView view) {
-                if (mPlaybackSpeed < 2) mPlaybackSpeed += 0.25;
-                else mPlaybackSpeed = 1;
-                mPlayer.setPlaybackSpeed(mPlaybackSpeed);
-                ((TextView) view).setText(String.format("Velo. %sx", mPlaybackSpeed));
+                if (extraLastProgress >= 99)
+                    mPlayer.seekTo(mPlayer.getCurrentPosition() + (long) 10000);
+                else
+                    MessageAlert.create(AudioMediaActivity.this, MessageAlert.TYPE_ALERT, "Você só pode avançar a mídia se já tiver assistido-a por completo previamente.");
             }
 
             @Override
@@ -141,7 +138,6 @@ public class AudioMediaActivity extends MediaActivity {
                 public void onRenderedFirstFrame() {
                     Player.Listener.super.onRenderedFirstFrame();
                     isLoaded = true;
-                    setControlsVisibleComplete(true);
                     mMediaControl.setProgress(0);
                     findViewById(R.id.Audio_LoadingText).setVisibility(View.GONE);
                 }
@@ -153,10 +149,9 @@ public class AudioMediaActivity extends MediaActivity {
                         mPlayer.seekTo(extraLastPosition);
                         findViewById(R.id.Audio_AudioPlayerLayout).setVisibility(View.VISIBLE);
                         isLoaded = true;
-                        setControlsVisibleComplete(true);
                         mMediaControl.setProgress(0);
                         findViewById(R.id.Audio_LoadingText).setVisibility(View.GONE);
-
+                        setControlsVisibleComplete(true);
                     }
 
                     if (playbackState == Player.STATE_ENDED) {
@@ -164,8 +159,7 @@ public class AudioMediaActivity extends MediaActivity {
                         findViewById(R.id.Audio_PlayButtonBack1).clearAnimation();
                         findViewById(R.id.Audio_PlayButtonBack2).clearAnimation();
                         ((ImageView) findViewById(R.id.Audio_PlayButtonIcon)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_done, null));
-                        ((ImageView) findViewById(R.id.Audio_PlayButtonIcon)).setOnClickListener(view -> onBackPressed());
-                        setControlsVisibleComplete(false);
+                        findViewById(R.id.Audio_PlayButtonIcon).setOnClickListener(view -> onBackPressed());
                         isFinished = true;
                         extraLastPosition = 0;
                     }
@@ -237,7 +231,10 @@ public class AudioMediaActivity extends MediaActivity {
 
     @Override
     public void setControlsVisibleComplete(boolean visible) {
-        mMediaControl.setControlsVisible(visible);
+        if (isControlsVisibles != visible && isLoaded) {
+            isControlsVisibles = visible;
+            mMediaControl.setControlsVisible(visible);
+        }
     }
 
     @Override

@@ -26,9 +26,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.firmino.neurossaude.admin.panel.AdminActivity;
 import com.firmino.neurossaude.alerts.AlarmReceiver;
 import com.firmino.neurossaude.alerts.MessageAlert;
 import com.firmino.neurossaude.mediaactivity.MediaActivity;
+import com.firmino.neurossaude.mediaactivity.VideoMediaActivity;
 import com.firmino.neurossaude.user.User;
 import com.firmino.neurossaude.views.WeekView;
 import com.firmino.neurossaude.views.WeekViewCoinButton;
@@ -38,6 +40,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.common.collect.Lists;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -56,11 +59,18 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout mLayoutSettings;
     private FloatingActionButton mFabSettings;
     private boolean isSettingsVisible = false;
+    private SharedPreferences prefs;
+
+    // TODO: Acrescentar botões de apresentação do instrutor e de Léo após o vídeo introdutório OU ao final COM FOTO
+    // TODO: cortar parte do texto de apresentação
+    // TODO: Desbloqueio dinâmico dos coins nas weekviews
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        prefs = getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE);
 
         mWeekViews = new ArrayList<>();
         mMainProgress = findViewById(R.id.Main_Bar_Progress);
@@ -97,8 +107,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.Main_Button_Offline).setOnClickListener(view -> showOfflineModeDialog());
         mFabSettings.setOnClickListener(view -> setSettingsVisible(!isSettingsVisible));
         findViewById(R.id.Main_Button_InitialVideo).setOnClickListener(view -> startInitVideo());
-
-
+        if (User.admin) {
+            findViewById(R.id.Main_Button_Admin_Layout).setVisibility(View.VISIBLE);
+            findViewById(R.id.Main_Button_Admin).setOnClickListener(v -> startActivity(new Intent(MainActivity.this, AdminActivity.class)));
+        }
 
         update();
     }
@@ -178,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
     private void showAlarmDialog() {
         setSettingsVisible(false);
         setFreeDistractionModeOn(true);
-        SharedPreferences prefs = getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE);
+
         View alertContent = getLayoutInflater().inflate(R.layout.alarm_dialog_layout, findViewById(R.id.Alarm_Main));
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setCancelable(false);
@@ -213,7 +225,6 @@ public class MainActivity extends AppCompatActivity {
             AlarmReceiver.setAlarm(this);
             alertContent.findViewById(R.id.Alarm_Layout).setVisibility(View.GONE);
             if (alarmEnableSwitch.isChecked()) {
-
                 MessageAlert.create(this, MessageAlert.TYPE_SUCESS, String.format(Locale.getDefault(), "Lembrete criado para %02dh:%02dmin", alarmTimePicker.getCurrentHour(), alarmTimePicker.getCurrentMinute()));
             } else {
                 MessageAlert.create(this, MessageAlert.TYPE_SUCESS, "Lembretes desabilitados.");
@@ -258,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showOfflineModeDialog() {
         setSettingsVisible(false);
-        MessageAlert.create(this,MessageAlert.TYPE_ALERT, "Essa funcionalidade ainda está em desenvolvimento.");
+        MessageAlert.create(this, MessageAlert.TYPE_ALERT, "Essa funcionalidade ainda está em desenvolvimento.");
         /*
         setSettingsVisible(false);
         SharedPreferences prefs = getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE);
@@ -343,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setFreeDistractionModeOn(boolean active) {
         FrameLayout ripple = findViewById(R.id.Main_Ripple);
-        if(active) {
+        if (active) {
             ripple.setVisibility(View.VISIBLE);
             int maxSize = getResources().getDisplayMetrics().heightPixels * 2;
             ValueAnimator anim = ValueAnimator.ofInt(0, maxSize);
@@ -355,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
             });
             anim.setDuration(1000);
             anim.start();
-        }else {
+        } else {
             ValueAnimator anim = ValueAnimator.ofInt(ripple.getLayoutParams().height, 0);
             anim.addUpdateListener(animation -> {
                 ViewGroup.LayoutParams params = ripple.getLayoutParams();
@@ -412,11 +423,18 @@ public class MainActivity extends AppCompatActivity {
                     for (WeekView weekView : mWeekViews) if (weekView.isUnlocked()) unlockedWeeksCount++;
                     mMainWeek.setText(String.format(Locale.getDefault(), "%d/%d", unlockedWeeksCount, totalWeeks));
 
-                    int dayOfTheMonth = Calendar.getInstance(TimeZone.getDefault()).get(Calendar.MINUTE);
-                    getLastCoinUnlocked().setListenerComplete(() -> getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE).edit().putInt("lastCompleteDate", dayOfTheMonth).apply());
+                    int dayOfTheMonth = Calendar.getInstance(TimeZone.getDefault()).get(Calendar.DAY_OF_MONTH);
+                    getLastCoinUnlocked().setListenerComplete(() -> {
+                        getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE).edit().putInt("lastCompleteDate", dayOfTheMonth).apply();
+                        System.out.println("Mimde");
+                        System.out.println(dayOfTheMonth);
+                    });
 
-                    if (getLastWeekViewUnlocked() != null)
-                        getLastWeekViewUnlocked().getFirstLockedCoin().setUnlocked(dayOfTheMonth != getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE).getInt("lastCompleteDate", 0));
+                    if (getLastWeekViewUnlocked() != null) {
+                        if (getLastWeekViewUnlocked().getFirstLockedCoin() != null)
+                            getLastWeekViewUnlocked().getFirstLockedCoin().setUnlocked(dayOfTheMonth != getSharedPreferences("com.firmino.neurossaude", MODE_PRIVATE).getInt("lastCompleteDate", 0));
+                        getLastWeekViewUnlocked().setButtonsVisible(true);
+                    }
 
                     User.getTimeOnMediaOnAllWeeks((hours, minutes) -> {
                         mMainTime.setText(String.format(Locale.getDefault(), "%02dh%02dmin", hours, minutes));
@@ -445,14 +463,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public WeekViewCoinButton getLastCoinUnlocked() {
-        for (WeekView weekView : mWeekViews)
-            if (weekView.getProgress() < 100)
-                return weekView.getLastUnlockedCoin();
+        if (getLastWeekViewUnlocked() != null)
+            return getLastWeekViewUnlocked().getLastUnlockedCoin();
         return null;
     }
 
     private WeekView getLastWeekViewUnlocked() {
-        for (WeekView weekView : mWeekViews)
+        for (WeekView weekView : Lists.reverse(mWeekViews))
             if (weekView.isUnlocked())
                 return weekView;
         return null;

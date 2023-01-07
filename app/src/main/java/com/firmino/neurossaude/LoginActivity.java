@@ -131,9 +131,12 @@ public class LoginActivity extends AppCompatActivity {
                     User.image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_google_logged);
                 mFirestore.collection("users").document(Objects.requireNonNull(mAccount.getEmail())).set(newUser, SetOptions.merge()).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        runOnUiThread(() -> {
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            finish();
+                        mFirestore.collection("users").document(mAccount.getEmail()).get().addOnCompleteListener(task1 -> {
+                            User.admin = Boolean.TRUE.equals(task1.getResult().getBoolean("admin"));
+                            runOnUiThread(() -> {
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                finish();
+                            });
                         });
                     } else {
                         MessageAlert.create(this, MessageAlert.TYPE_ERRO, "Não foi possível carregar dados da conta, tente novamente mais tarde.");

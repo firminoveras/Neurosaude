@@ -32,4 +32,14 @@
     <string name="loading_text">Carregando Texto…</string>
     <string name="loading_video">Carregando vídeo…</string>
     <string name="loading_audio">Carregando áudio…</string>
+    <string name="admin_panel">Painel Admin.</string>
+    <string name="painel_administrativo">Painel Administrativo</string>
+    <string name="datails">Detalhes</string>
+    <string name="clear">Limpar</string>
+    <string name="all">Todos</string>
+    <string name="refresh">Atualizar</string>
+    <string name="export">Exportar</string>
+    <string name="video">Vídeo</string>
+    <string name="text">Texto</string>
+    <string name="audios">Audios</string>
 </resources>

@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:background="@color/color_gray"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/WeekViewDetails_Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_background"
+        android:fontFamily="@font/comfortaa"
+        android:gravity="center"
+        android:padding="12dp"
+        android:textColor="@color/color_white"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:drawableStartCompat="@drawable/ic_course" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/WeekViewDetails_Layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:background="#1A000000"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/WeekViewDetails_VideoProgress"
+                    style="@android:style/Widget.Material.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progress="50"
+                    android:progressTint="@color/color_background" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/comfortaa"
+                    android:gravity="center"
+                    android:text="@string/video"
+                    android:textColor="@color/color_background"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_video_icon"
+                    app:drawableTint="@color/color_background" />
+
+                <TextView
+                    android:id="@+id/WeekViewDetails_VideoProgressText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/comfortaa"
+                    android:gravity="center"
+                    android:textColor="@color/color_background"
+                    android:textSize="12sp"
+                    app:drawableStartCompat="@drawable/ic_leaderborder"
+                    app:drawableTint="@color/color_background" />
+
+                <TextView
+                    android:id="@+id/WeekViewDetails_VideoTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/comfortaa"
+                    android:gravity="center"
+                    android:textColor="@color/color_background"
+                    android:textSize="12sp"
+                    app:drawableStartCompat="@drawable/ic_time"
+                    app:drawableTint="@color/color_background" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:background="#1A000000"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/WeekViewDetails_TextProgress"
+                    style="@android:style/Widget.Material.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progress="50"
+                    android:progressTint="@color/color_background" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/comfortaa"
+                    android:gravity="center"
+                    android:text="@string/text"
+                    android:textColor="@color/color_background"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_text_icon"
+                    app:drawableTint="@color/color_background" />
+
+                <TextView
+                    android:id="@+id/WeekViewDetails_TextProgressText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/comfortaa"
+                    android:gravity="center"
+                    android:textColor="@color/color_background"
+                    android:textSize="12sp"
+                    app:drawableStartCompat="@drawable/ic_leaderborder"
+                    app:drawableTint="@color/color_background" />
+
+                <TextView
+                    android:id="@+id/WeekViewDetails_TextTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/comfortaa"
+                    android:gravity="center"
+                    android:textColor="@color/color_background"
+                    android:textSize="12sp"
+                    app:drawableStartCompat="@drawable/ic_time"
+                    app:drawableTint="@color/color_background" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:background="#1A000000"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/WeekViewDetails_AudioProgress"
+                    style="@android:style/Widget.Material.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progress="50"
+                    android:progressTint="@color/color_background" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/comfortaa"
+                    android:gravity="center"
+                    android:text="@string/audios"
+                    android:textColor="@color/color_background"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_audio_icon"
+                    app:drawableTint="@color/color_background" />
+
+                <TextView
+                    android:id="@+id/WeekViewDetails_AudioText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/comfortaa"
+                    android:gravity="center"
+                    android:textColor="@color/color_background"
+                    android:textSize="12sp"
+                    app:drawableStartCompat="@drawable/ic_leaderborder"
+                    app:drawableTint="@color/color_background" />
+
+                <TextView
+                    android:id="@+id/WeekViewDetails_AudioTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/comfortaa"
+                    android:gravity="center"
+                    android:textColor="@color/color_background"
+                    android:textSize="12sp"
+                    app:drawableStartCompat="@drawable/ic_time"
+                    app:drawableTint="@color/color_background" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="-6dp"
+                        android:fontFamily="monospace"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="4dp"
+                        android:text="1"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/ic_audio_icon"
+                        app:drawableTint="@color/color_background" />
+
+                    <TextView
+                        android:id="@+id/WeekViewDetails_Audio1Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/comfortaa"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/ic_leaderborder"
+                        app:drawableTint="@color/color_background" />
+
+                    <TextView
+                        android:id="@+id/WeekViewDetails_Audio1Time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:fontFamily="@font/comfortaa"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/ic_time"
+                        app:drawableTint="@color/color_background" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="-6dp"
+                        android:fontFamily="monospace"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="4dp"
+                        android:text="2"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/ic_audio_icon"
+                        app:drawableTint="@color/color_background" />
+
+                    <TextView
+                        android:id="@+id/WeekViewDetails_Audio2Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/comfortaa"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/ic_leaderborder"
+                        app:drawableTint="@color/color_background" />
+
+                    <TextView
+                        android:id="@+id/WeekViewDetails_Audio2Time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:fontFamily="@font/comfortaa"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/ic_time"
+                        app:drawableTint="@color/color_background" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="-6dp"
+                        android:fontFamily="monospace"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="4dp"
+                        android:text="3"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/ic_audio_icon"
+                        app:drawableTint="@color/color_background" />
+
+                    <TextView
+                        android:id="@+id/WeekViewDetails_Audio3Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/comfortaa"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/ic_leaderborder"
+                        app:drawableTint="@color/color_background" />
+
+                    <TextView
+                        android:id="@+id/WeekViewDetails_Audio3Time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:fontFamily="@font/comfortaa"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/ic_time"
+                        app:drawableTint="@color/color_background" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="-6dp"
+                        android:fontFamily="monospace"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="4dp"
+                        android:text="4"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/ic_audio_icon"
+                        app:drawableTint="@color/color_background" />
+
+                    <TextView
+                        android:id="@+id/WeekViewDetails_Audio4Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/comfortaa"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/ic_leaderborder"
+                        app:drawableTint="@color/color_background" />
+
+                    <TextView
+                        android:id="@+id/WeekViewDetails_Audio4Time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:fontFamily="@font/comfortaa"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/ic_time"
+                        app:drawableTint="@color/color_background" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="-6dp"
+                        android:fontFamily="monospace"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="4dp"
+                        android:text="5"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/ic_audio_icon"
+                        app:drawableTint="@color/color_background" />
+
+                    <TextView
+                        android:id="@+id/WeekViewDetails_Audio5Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/comfortaa"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/ic_leaderborder"
+                        app:drawableTint="@color/color_background" />
+
+                    <TextView
+                        android:id="@+id/WeekViewDetails_Audio5Time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:fontFamily="@font/comfortaa"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/ic_time"
+                        app:drawableTint="@color/color_background" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="-6dp"
+                        android:fontFamily="monospace"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="4dp"
+                        android:text="6"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/ic_audio_icon"
+                        app:drawableTint="@color/color_background" />
+
+                    <TextView
+                        android:id="@+id/WeekViewDetails_Audio6Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/comfortaa"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/ic_leaderborder"
+                        app:drawableTint="@color/color_background" />
+
+                    <TextView
+                        android:id="@+id/WeekViewDetails_Audio6Time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:fontFamily="@font/comfortaa"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/color_background"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/ic_time"
+                        app:drawableTint="@color/color_background" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

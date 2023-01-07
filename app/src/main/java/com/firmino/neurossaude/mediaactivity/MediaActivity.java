@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firmino.neurossaude.alerts.MessageAlert;
+import com.firmino.neurossaude.user.User;
 import com.google.firebase.storage.FirebaseStorage;
 
 public abstract class MediaActivity extends AppCompatActivity implements Runnable, MediaActivityImplements {
@@ -36,11 +37,18 @@ public abstract class MediaActivity extends AppCompatActivity implements Runnabl
     public final static int MEDIA_TYPE_AUDIO = 1;
     public final static int MEDIA_TYPE_VIDEO = 2;
     public final static int MEDIA_TYPE_TEXT = 3;
+    private int week = -1;
+    private int mediaType = -1;
+
+    // TODO: baixar textos de título e subtitulo pois estão muito em cima
+    // TODO: Salvamento dinâmico (ISSO VAI CUSTAR TEMPO DEMAIS)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String url = getIntent().getExtras().getString("url");
+        week = getIntent().getExtras().getInt("week");
+        mediaType = getIntent().getExtras().getInt("mediaType");
         if (url.endsWith(".mp3")) extrasMediaType = MEDIA_TYPE_AUDIO;
         if (url.endsWith(".mp4")) extrasMediaType = MEDIA_TYPE_VIDEO;
         if (url.endsWith(".md")) extrasMediaType = MEDIA_TYPE_TEXT;
@@ -92,7 +100,7 @@ public abstract class MediaActivity extends AppCompatActivity implements Runnabl
         setControlsVisible(false);
         Intent intent = new Intent();
         intent.putExtra("progress", Math.max(extraLastProgress, getProgress()));
-        intent.putExtra("value",  getPosition());
+        intent.putExtra("value", getPosition());
         intent.putExtra("week", getIntent().getExtras().getInt("week", -1));
         intent.putExtra("mediaType", extrasMediaType);
         intent.putExtra("audioIndex", getIntent().getExtras().getInt("audioIndex", -1));
@@ -129,10 +137,16 @@ public abstract class MediaActivity extends AppCompatActivity implements Runnabl
     }
 
     private void setControlsVisible(boolean visible) {
-        if (isControlsVisibles != visible && !isFinished && isLoaded) {
-            isControlsVisibles = visible;
-            setControlsVisibleComplete(visible);
-        }
+        setControlsVisibleComplete(visible);
     }
 
+    protected void save() {
+        User.loadProgress(() -> {
+            User.saveLocalProgress(6, "audio1", 5L, 1000L);
+            User.saveProgress(() -> {
+                MessageAlert.create(this, MessageAlert.TYPE_SUCESS, "Foi");
+            });
+        });
+
+    }
 }
